@@ -47,4 +47,12 @@ export interface SKURecommendation {
     profit_at_risk: number;
     impact_score: number;
     recommended_action: string;
+    // LangChain LLM insights (optional)
+    llm_profit_insight?: string;
+    llm_inventory_insight?: string;
+    llm_strategy_insight?: string;
+    llm_confidence?: number;
+    llm_profit_confidence?: number;
+    llm_inventory_confidence?: number;
+    llm_strategy_confidence?: number;
 }

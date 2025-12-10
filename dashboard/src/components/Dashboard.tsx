@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, Activity } from 'lucide-react';
+import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, Activity, Sparkles } from 'lucide-react';
 import AgentStatusCard from './AgentStatusCard';
 import MetricsChart from './MetricsChart';
 import RecommendationsTable from './RecommendationsTable';
@@ -93,9 +93,23 @@ const Dashboard: React.FC = () => {
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-2">
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                            Agent Dashboard
-                        </h1>
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                                Agent Dashboard
+                            </h1>
+                            {/* LangChain Indicator */}
+                            {recommendations.some(r => r.llm_profit_insight || r.llm_inventory_insight || r.llm_strategy_insight) && (
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-full">
+                                    <div className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                                    </div>
+                                    <span className="text-xs font-medium text-purple-300">
+                                        LangChain + Groq AI Active
+                                    </span>
+                                </div>
+                            )}
+                        </div>
                         <button
                             onClick={handleRefresh}
                             disabled={refreshing}

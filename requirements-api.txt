@@ -4,3 +4,16 @@ pydantic==2.5.0
 python-multipart==0.0.6
 pandas>=2.0.0
 numpy>=1.24.0
+python-dotenv>=1.0.0
+
+# LangChain with Groq
+langchain>=0.1.0
+langchain-groq>=0.0.1
+langchain-community>=0.0.13
+langchain-core>=0.1.0
+
+# Groq SDK
+groq>=0.4.0
+
+# Utilities
+tiktoken>=0.5.0

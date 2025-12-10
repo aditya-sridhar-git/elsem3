@@ -85,7 +85,7 @@ def run_pipeline(
     if verbose:
         print(f"[INFO] StrategySupervisor completed in {time.time() - agent_start:.2f}s")
 
-    # Select columns for output
+    # Select columns for output (including LLM insights if present)
     cols_for_output = [
         "sku_id", "category", "product_name",
         "selling_price", "cogs", "current_stock", "lead_time_days",
@@ -93,6 +93,9 @@ def run_pipeline(
         "sales_velocity_per_day", "days_of_stock_left", "risk_level",
         "reorder_qty_suggested", "profit_at_risk",
         "impact_score", "recommended_action",
+        # LangChain LLM insights
+        "llm_profit_insight", "llm_inventory_insight", "llm_strategy_insight",
+        "llm_profit_confidence", "llm_inventory_confidence", "llm_strategy_confidence",
     ]
 
     # Filter to existing columns
