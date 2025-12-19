@@ -1,9 +1,0 @@
-sku_id,category,product_name,selling_price,mrp,cogs,shipping_cost_per_unit,platform_fee_percent,platform_fixed_fee,ad_spend_total_last_30_days,units_sold_last_30_days,current_stock,lead_time_days,is_hero
-SKU101_ELECT,Electronics,Budget TWS Earbuds,899,1499,480,80,2.0,3,9000,420,60,14,True
-SKU102_ELECT,Electronics,Fast Charge Type-C Cable,299,499,130,60,2.0,3,2500,220,300,10,False
-SKU201_FASH,Fashion,Oversized Graphic T-Shirt,699,1199,320,70,2.0,3,6000,260,80,9,True
-SKU202_FASH,Fashion,Unisex Cotton Hoodie,1199,1899,650,90,2.0,3,7500,140,200,15,False
-SKU301_BEAU,Beauty,Oil Control Face Wash,349,499,140,55,2.0,3,5000,310,50,12,True
-SKU302_BEAU,Beauty,Vitamin C Serum 30ml,799,1299,360,60,2.0,3,9500,180,40,16,True
-SKU401_HOME,Home,Steel Water Bottle 1L,549,899,260,75,2.0,3,3000,150,220,14,False
-SKU402_HOME,Home,Kitchen Drawer Organizer,799,1299,380,85,2.0,3,2000,90,150,18,False

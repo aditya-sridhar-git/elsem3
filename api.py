@@ -10,7 +10,9 @@ from datetime import datetime
 import traceback
 
 from config import CFG
+from config import CFG
 from pipeline import run_pipeline
+from shopify_loader import ShopifyLoader
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -88,9 +90,41 @@ class SKURecommendation(BaseModel):
 
 
 # Helper function to execute pipeline
+def load_shopify_data():
+    """Fetch data from Shopify and run pipeline"""
+    global pipeline_data, last_execution_time, execution_status, data_source
+    
+    loader = ShopifyLoader()
+    if not loader.validate_config():
+        return False
+        
+    try:
+        df_master, df_sales = loader.fetch_data()
+        if df_master.empty:
+            return False
+            
+        # Run pipeline with Shopify data
+        pipeline_data = run_pipeline(verbose=True, df_master=df_master, df_sales=df_sales)
+        last_execution_time = datetime.now()
+        data_source = "shopify"
+        execution_status = {
+            "status": "success",
+            "message": f"Shopify data loaded at {last_execution_time.strftime('%Y-%m-%d %H:%M:%S')}"
+        }
+        return True
+    except Exception as e:
+        print(f"[ERROR] Shopify load failed: {str(e)}")
+        return False
+
 def execute_pipeline():
     global pipeline_data, last_execution_time, execution_status, data_source
     
+    # Try Shopify First
+    if CFG.shopify_access_token and CFG.shopify_shop_domain and data_source != "shopify":
+        print("[INFO] Attempting to load Shopify data...")
+        if load_shopify_data():
+            return True
+            
     # Don't overwrite Shopify data with CSV data
     if data_source == "shopify":
         print("[INFO] Shopify data active. Skipping CSV pipeline.")
@@ -122,12 +156,13 @@ def execute_pipeline():
         return False
 
 
+
 # Execute pipeline on startup - Waiting for Shopify data from n8n
 @app.on_event("startup")
 async def startup_event():
     print("[INFO] API started. Waiting for Shopify data from n8n...")
     print("[INFO] Trigger your n8n workflow to load Shopify products with LangChain insights!")
-    # execute_pipeline()  # Disabled - waiting for Shopify via n8n
+
 
 
 # API Endpoints
@@ -377,6 +412,15 @@ class UserAction(BaseModel):
     execution_details: Optional[Dict[str, Any]] = None
 
 
+class InternalAction(BaseModel):
+    """Model for internal actions triggered from dashboard"""
+    sku_id: str
+    action_type: str  # RESTOCK, PRICE_CHANGE, DISMISS
+    value: Optional[float] = None  # New quantity or new price
+    original_value: Optional[float] = None
+    rationale: Optional[str] = None
+
+
 # Global storage for user actions
 pending_user_actions: List[Dict[str, Any]] = []
 completed_user_actions: List[Dict[str, Any]] = []
@@ -460,7 +504,10 @@ async def n8n_analyze_shopify_data(data: ShopifyData):
                 "units_sold_last_30_days": 150,  # Default sales (can be calculated from orders if provided)
                 "current_stock": inventory_quantity,
                 "lead_time_days": 12,  # Default lead time
-                "is_hero": False
+                "is_hero": False,
+                # Store Shopify IDs for write-back
+                "shopify_variant_id": variant.get("id"),
+                "shopify_inventory_item_id": variant.get("inventory_item_id")
             }
             
             sku_master_rows.append(sku_row)
@@ -770,6 +817,169 @@ async def update_action_status(action_index: int, status: str, execution_details
         raise
     except Exception as e:
         print(f"[ERROR] Failed to update action status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/alerts")
+async def get_alerts():
+    """
+    Get actionable alerts from current recommendations.
+    Filters for CRITICAL or WARNING items unless already acted upon.
+    """
+    if pipeline_data is None:
+        return {"alerts": []}
+        
+    alerts = []
+    
+    # Filter for actionable items
+    actionable = pipeline_data[
+        (pipeline_data["risk_level"].isin(["CRITICAL", "WARNING"])) |
+        (pipeline_data["is_loss_maker"] == True)
+    ]
+    
+    # Exclude already acted upon SKUs (simple in-memory check for this session)
+    acted_skus = {a["sku_id"] for a in completed_user_actions if a["status"] == "executed"}
+    # Also exclude dismissed
+    dismissed_skus = {a["sku_id"] for a in completed_user_actions if a.get("action") == "DISMISS"}
+    
+    exclude_skus = acted_skus.union(dismissed_skus)
+    
+    for _, row in actionable.iterrows():
+        if row["sku_id"] in exclude_skus:
+            continue
+            
+        alerts.append({
+            "sku_id": row["sku_id"],
+            "product_name": row["product_name"],
+            "risk_level": row["risk_level"],
+            "recommended_action": row["recommended_action"],
+            "current_stock": int(row["current_stock"]),
+            "selling_price": float(row["selling_price"]),
+            "profit_per_unit": float(row["profit_per_unit"]),
+            "impact_score": float(row["impact_score"]),
+            # Include suggested values
+            "suggested_reorder": float(row["reorder_qty_suggested"]) if row["reorder_qty_suggested"] > 0 else 50,
+            "suggested_price": float(row["selling_price"]) * 1.1 if "PRICE" in row["recommended_action"] else None
+        })
+        
+    # Sort by impact
+    alerts.sort(key=lambda x: x["impact_score"], reverse=True)
+    return alerts
+
+
+
+def update_csv_source(sku_id: str, action_type: str, value: float):
+    """
+    Update the master CSV file to persist changes locally.
+    """
+    try:
+        master_path = CFG.sku_master_path
+        if not os.path.exists(master_path):
+            print(f"[WARNING] Master CSV not found at {master_path}")
+            return
+
+        df_master = pd.read_csv(master_path)
+        mask = df_master["sku_id"] == sku_id
+        
+        if mask.any():
+            if action_type == "RESTOCK":
+                current = df_master.loc[mask, "current_stock"].values[0]
+                df_master.loc[mask, "current_stock"] = current + (value or 0)
+            elif action_type == "PRICE_CHANGE":
+                df_master.loc[mask, "selling_price"] = value
+                
+            df_master.to_csv(master_path, index=False)
+            print(f"[SUCCESS] Updated {sku_id} in {master_path}")
+        else:
+            print(f"[WARNING] SKU {sku_id} not found in master CSV")
+            
+    except Exception as e:
+        print(f"[ERROR] Error updating CSV: {str(e)}")
+        raise
+
+
+@app.post("/api/alerts/action")
+async def execute_alert_action(action: InternalAction):
+    """
+    Execute an action from the Alerts tab.
+    Mock update for now, but logs the action as if sent to Shopify.
+    """
+    global pipeline_data
+    
+    try:
+        # Log the action
+        action_entry = {
+            "sku_id": action.sku_id,
+            "action": action.action_type,
+            "value": action.value,
+            "timestamp": datetime.now().isoformat(),
+            "status": "executed",
+            "source": "dashboard_alerts"
+        }
+        completed_user_actions.append(action_entry)
+        
+        # MOCK UPDATE: Update the local pipeline_data to reflect change
+        if pipeline_data is not None and not pipeline_data.empty:
+            if action.action_type == "RESTOCK":
+                # Update stock
+                mask = pipeline_data["sku_id"] == action.sku_id
+                if mask.any():
+                    current = pipeline_data.loc[mask, "current_stock"].values[0]
+                    new_stock = current + (action.value or 0)
+                    pipeline_data.loc[mask, "current_stock"] = new_stock
+                    # Recalculate risk (simplified)
+                    pipeline_data.loc[mask, "risk_level"] = "SAFE" 
+                    pipeline_data.loc[mask, "recommended_action"] = "MONITOR"
+                    print(f"[INFO] Mock update: Restocked {action.sku_id} to {new_stock}")
+                    
+            elif action.action_type == "PRICE_CHANGE":
+                # Update price
+                mask = pipeline_data["sku_id"] == action.sku_id
+                if mask.any():
+                    pipeline_data.loc[mask, "selling_price"] = action.value
+                    # Recalculate profit (simplified)
+                    pipeline_data.loc[mask, "profit_per_unit"] += (action.value - (action.original_value or action.value)) # Approximate
+                    pipeline_data.loc[mask, "recommended_action"] = "MONITOR"
+                    print(f"[INFO] Mock update: Repriced {action.sku_id} to {action.value}")
+
+        # PERSIST UPDATE: Update the source (CSV or Shopify)
+        try:
+            if data_source == "shopify" and CFG.shopify_access_token:
+                loader = ShopifyLoader()
+                # Find IDs from dataframe
+                mask = pipeline_data["sku_id"] == action.sku_id
+                if mask.any():
+                    row = pipeline_data.loc[mask].iloc[0]
+                    # Check if we have variant ID mapped (ShopifyLoader adds it)
+                    if "shopify_variant_id" in row:
+                        variant_id = int(row["shopify_variant_id"])
+                        inv_id = int(row["shopify_inventory_item_id"])
+                        
+                        if action.action_type == "RESTOCK":
+                            # We need new TOTAL qty, not just add
+                            current = int(row["current_stock"]) # This is already updated in memory above
+                            # But wait, above updated pipeline_data. So 'row' has NEW stock.
+                            loader.update_stock(variant_id, inv_id, current)
+                        elif action.action_type == "PRICE_CHANGE":
+                             loader.update_price(variant_id, action.value)
+                        
+                        print(f"[INFO] Shopify updated for {action.sku_id}")
+            
+            elif data_source != "shopify":
+                update_csv_source(action.sku_id, action.action_type, action.value)
+                print(f"[INFO] Source CSV updated for {action.sku_id}")
+                
+        except Exception as e:
+            print(f"[ERROR] Failed to persist update: {str(e)}")
+
+        return {
+            "status": "success", 
+            "message": f"Action {action.action_type} executed for {action.sku_id}",
+            "updated_value": action.value
+        }
+        
+    except Exception as e:
+        print(f"[ERROR] Failed to execute alert action: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

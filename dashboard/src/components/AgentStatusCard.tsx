@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, TrendingUp, TrendingDown, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Activity, TrendingUp, CheckCircle } from 'lucide-react';
 import type { Agent } from '../types';
 
 interface AgentStatusCardProps {
@@ -89,8 +89,8 @@ const AgentStatusCard: React.FC<AgentStatusCardProps> = ({ agent }) => {
                     {agent.name}
                 </h3>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${agent.status === 'completed'
-                        ? 'bg-emerald-500/20 text-emerald-400'
-                        : 'bg-yellow-500/20 text-yellow-400'
+                    ? 'bg-emerald-500/20 text-emerald-400'
+                    : 'bg-yellow-500/20 text-yellow-400'
                     }`}>
                     {agent.status}
                 </span>

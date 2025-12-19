@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpDown, AlertCircle, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import type { SKURecommendation } from '../types';
 
 interface RecommendationsTableProps {
@@ -205,9 +206,19 @@ const RecommendationsTable: React.FC<RecommendationsTableProps> = ({ recommendat
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-slate-300 leading-relaxed">
-                                                                {rec.llm_profit_insight}
-                                                            </p>
+                                                            <div className="text-xs text-slate-300 leading-relaxed">
+                                                                <ReactMarkdown
+                                                                    components={{
+                                                                        p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                                                                        strong: ({ node, ...props }) => <span className="font-bold text-white" {...props} />,
+                                                                        ul: ({ node, ...props }) => <ul className="list-disc ml-4 mb-2" {...props} />,
+                                                                        ol: ({ node, ...props }) => <ol className="list-decimal ml-4 mb-2" {...props} />,
+                                                                        li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+                                                                    }}
+                                                                >
+                                                                    {rec.llm_profit_insight}
+                                                                </ReactMarkdown>
+                                                            </div>
                                                         </div>
                                                     )}
 
@@ -222,9 +233,19 @@ const RecommendationsTable: React.FC<RecommendationsTableProps> = ({ recommendat
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-slate-300 leading-relaxed">
-                                                                {rec.llm_inventory_insight}
-                                                            </p>
+                                                            <div className="text-xs text-slate-300 leading-relaxed">
+                                                                <ReactMarkdown
+                                                                    components={{
+                                                                        p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                                                                        strong: ({ node, ...props }) => <span className="font-bold text-white" {...props} />,
+                                                                        ul: ({ node, ...props }) => <ul className="list-disc ml-4 mb-2" {...props} />,
+                                                                        ol: ({ node, ...props }) => <ol className="list-decimal ml-4 mb-2" {...props} />,
+                                                                        li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+                                                                    }}
+                                                                >
+                                                                    {rec.llm_inventory_insight}
+                                                                </ReactMarkdown>
+                                                            </div>
                                                         </div>
                                                     )}
 
@@ -239,9 +260,19 @@ const RecommendationsTable: React.FC<RecommendationsTableProps> = ({ recommendat
                                                                     </span>
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-slate-300 leading-relaxed">
-                                                                {rec.llm_strategy_insight}
-                                                            </p>
+                                                            <div className="text-xs text-slate-300 leading-relaxed">
+                                                                <ReactMarkdown
+                                                                    components={{
+                                                                        p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                                                                        strong: ({ node, ...props }) => <span className="font-bold text-white" {...props} />,
+                                                                        ul: ({ node, ...props }) => <ul className="list-disc ml-4 mb-2" {...props} />,
+                                                                        ol: ({ node, ...props }) => <ol className="list-decimal ml-4 mb-2" {...props} />,
+                                                                        li: ({ node, ...props }) => <li className="mb-1" {...props} />,
+                                                                    }}
+                                                                >
+                                                                    {rec.llm_strategy_insight}
+                                                                </ReactMarkdown>
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, Activity, Sparkles } from 'lucide-react';
+import { RefreshCw, TrendingUp, TrendingDown, AlertTriangle, Activity, Bell } from 'lucide-react';
 import AgentStatusCard from './AgentStatusCard';
 import MetricsChart from './MetricsChart';
 import RecommendationsTable from './RecommendationsTable';
+import AlertsTab from './AlertsTab';
 import { api } from '../services/api';
 import type { AgentStatusResponse, MetricsSummary, SKURecommendation } from '../types';
 
+type Tab = 'overview' | 'alerts';
+
 const Dashboard: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<Tab>('overview');
     const [agentStatus, setAgentStatus] = useState<AgentStatusResponse | null>(null);
     const [metrics, setMetrics] = useState<MetricsSummary | null>(null);
     const [recommendations, setRecommendations] = useState<SKURecommendation[]>([]);
@@ -92,7 +96,7 @@ const Dashboard: React.FC = () => {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                         <div className="flex items-center gap-4">
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                                 Agent Dashboard
@@ -105,96 +109,127 @@ const Dashboard: React.FC = () => {
                                         <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                                     </div>
                                     <span className="text-xs font-medium text-purple-300">
-                                        LangChain + Groq AI Active
+                                        Active
                                     </span>
                                 </div>
                             )}
                         </div>
-                        <button
-                            onClick={handleRefresh}
-                            disabled={refreshing}
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 text-white rounded-lg transition-colors shadow-lg hover:shadow-blue-500/50"
-                        >
-                            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-                            {refreshing ? 'Refreshing...' : 'Refresh'}
-                        </button>
+                        <div className="flex items-center gap-3">
+                            <div className="flex p-1 bg-slate-800/50 rounded-lg border border-slate-700">
+                                <button
+                                    onClick={() => setActiveTab('overview')}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'overview'
+                                            ? 'bg-blue-600 text-white shadow-lg'
+                                            : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    Overview
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('alerts')}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'alerts'
+                                            ? 'bg-blue-600 text-white shadow-lg'
+                                            : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    <Bell className="w-4 h-4" />
+                                    Alerts
+                                    {metrics && (metrics.total_critical_risk > 0 || metrics.total_loss_makers > 0) && (
+                                        <span className="flex h-2 w-2 relative">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                            <button
+                                onClick={handleRefresh}
+                                disabled={refreshing}
+                                className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg transition-colors"
+                            >
+                                <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+                            </button>
+                        </div>
                     </div>
-                    <p className="text-slate-400">
-                        E-commerce Intelligence • Last updated: {agentStatus?.last_execution
-                            ? new Date(agentStatus.last_execution).toLocaleString()
-                            : 'Never'}
-                    </p>
                 </div>
 
-                {/* Overview Cards */}
-                {metrics && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div className="glass-card p-6 fade-in pulse-glow">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-slate-400 text-sm">Total SKUs</span>
-                                <Activity className="w-5 h-5 text-blue-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-white">{metrics.total_skus}</p>
-                        </div>
+                {activeTab === 'overview' ? (
+                    <div className="animate-in fade-in duration-300">
+                        {/* Overview Cards */}
+                        {metrics && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                <div className="glass-card p-6 fade-in pulse-glow">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-slate-400 text-sm">Total SKUs</span>
+                                        <Activity className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                    <p className="text-3xl font-bold text-white">{metrics.total_skus}</p>
+                                </div>
 
-                        <div className="glass-card p-6 fade-in">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-slate-400 text-sm">Profitable</span>
-                                <TrendingUp className="w-5 h-5 text-emerald-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-emerald-400">{metrics.total_profitable}</p>
-                            <p className="text-xs text-slate-500 mt-1">
-                                Avg: ₹{metrics.avg_profit_per_unit.toFixed(2)}
-                            </p>
-                        </div>
+                                <div className="glass-card p-6 fade-in">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-slate-400 text-sm">Profitable</span>
+                                        <TrendingUp className="w-5 h-5 text-emerald-400" />
+                                    </div>
+                                    <p className="text-3xl font-bold text-emerald-400">{metrics.total_profitable}</p>
+                                    <p className="text-xs text-slate-500 mt-1">
+                                        Avg: ₹{metrics.avg_profit_per_unit.toFixed(2)}
+                                    </p>
+                                </div>
 
-                        <div className="glass-card p-6 fade-in">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-slate-400 text-sm">Loss Makers</span>
-                                <TrendingDown className="w-5 h-5 text-red-400" />
-                            </div>
-                            <p className="text-3xl font-bold text-red-400">{metrics.total_loss_makers}</p>
-                            <p className="text-xs text-slate-500 mt-1">
-                                Daily Loss: ₹{metrics.total_daily_loss.toFixed(2)}
-                            </p>
-                        </div>
+                                <div className="glass-card p-6 fade-in">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-slate-400 text-sm">Loss Makers</span>
+                                        <TrendingDown className="w-5 h-5 text-red-400" />
+                                    </div>
+                                    <p className="text-3xl font-bold text-red-400">{metrics.total_loss_makers}</p>
+                                    <p className="text-xs text-slate-500 mt-1">
+                                        Daily Loss: ₹{metrics.total_daily_loss.toFixed(2)}
+                                    </p>
+                                </div>
 
-                        <div className="glass-card p-6 fade-in">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-slate-400 text-sm">Critical Risk</span>
-                                <AlertTriangle className="w-5 h-5 text-red-400" />
+                                <div className="glass-card p-6 fade-in">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-slate-400 text-sm">Critical Risk</span>
+                                        <AlertTriangle className="w-5 h-5 text-red-400" />
+                                    </div>
+                                    <p className="text-3xl font-bold text-red-400">{metrics.total_critical_risk}</p>
+                                    <p className="text-xs text-slate-500 mt-1">
+                                        Warning: {metrics.total_warning_risk}
+                                    </p>
+                                </div>
                             </div>
-                            <p className="text-3xl font-bold text-red-400">{metrics.total_critical_risk}</p>
-                            <p className="text-xs text-slate-500 mt-1">
-                                Warning: {metrics.total_warning_risk}
-                            </p>
-                        </div>
+                        )}
+
+                        {/* Agent Status Cards */}
+                        {agentStatus && agentStatus.agents && (
+                            <div className="mb-8">
+                                <h2 className="text-2xl font-semibold text-white mb-4">Agent Status</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {agentStatus.agents.map((agent) => (
+                                        <AgentStatusCard key={agent.name} agent={agent} />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Charts */}
+                        {metrics && recommendations.length > 0 && (
+                            <div className="mb-8">
+                                <h2 className="text-2xl font-semibold text-white mb-4">Analytics</h2>
+                                <MetricsChart metrics={metrics} recommendations={recommendations} />
+                            </div>
+                        )}
+
+                        {/* Recommendations Table */}
+                        {recommendations.length > 0 && (
+                            <RecommendationsTable recommendations={recommendations} />
+                        )}
                     </div>
-                )}
-
-                {/* Agent Status Cards */}
-                {agentStatus && agentStatus.agents && (
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-semibold text-white mb-4">Agent Status</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {agentStatus.agents.map((agent) => (
-                                <AgentStatusCard key={agent.name} agent={agent} />
-                            ))}
-                        </div>
+                ) : (
+                    <div className="animate-in fade-in duration-300">
+                        <AlertsTab />
                     </div>
-                )}
-
-                {/* Charts */}
-                {metrics && recommendations.length > 0 && (
-                    <div className="mb-8">
-                        <h2 className="text-2xl font-semibold text-white mb-4">Analytics</h2>
-                        <MetricsChart metrics={metrics} recommendations={recommendations} />
-                    </div>
-                )}
-
-                {/* Recommendations Table */}
-                {recommendations.length > 0 && (
-                    <RecommendationsTable recommendations={recommendations} />
                 )}
 
                 {/* Error Banner */}

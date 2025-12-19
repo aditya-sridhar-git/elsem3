@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import time
 from dataclasses import dataclass
 from config import CFG, HAS_LANGCHAIN, llm
 
@@ -143,9 +144,15 @@ Provide: 1) Why this action 2) How to implement 3) Expected outcome 4) Priority.
                 df.at[idx, "llm_strategy_insight"] = result.strip()
                 df.at[idx, "llm_strategy_confidence"] = 0.90  # High confidence for strategy
                 
+                # Rate limiting
+                if hasattr(CFG, 'llm_delay'):
+                    time.sleep(CFG.llm_delay)
+                else:
+                    time.sleep(3)
+                
             except Exception as e:
                 print(f"[WARNING] LLM strategy failed for {row['sku_id']}: {str(e)}")
-                df.at[idx, "llm_strategy_insight"] = "Analysis unavailable"
+                df.at[idx, "llm_strategy_insight"] = ""
                 df.at[idx, "llm_strategy_confidence"] = 0.0
         
         print(f"[INFO] Strategy Supervisor: LLM analysis complete")

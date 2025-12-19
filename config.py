@@ -29,8 +29,10 @@ class Config:
     # LangChain Configuration
     enable_langchain: bool = os.getenv("ENABLE_LANGCHAIN", "False").lower() == "true"
     groq_api_key: str = os.getenv("GROQ_API_KEY", "")
-    llm_model: str = os.getenv("LLM_MODEL", "mixtral-8x7b-32768")
+    llm_model: str = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
     llm_temperature: float = float(os.getenv("LLM_TEMPERATURE", "0.1"))
+    llm_max_retries: int = int(os.getenv("LLM_MAX_RETRIES", "3"))
+    llm_delay: float = float(os.getenv("LLM_DELAY", "3.0"))  # Seconds between calls
     max_tokens: int = int(os.getenv("MAX_TOKENS", "1000"))
     
     # Agent-specific LLM toggles
@@ -42,6 +44,12 @@ class Config:
     batch_size: int = int(os.getenv("BATCH_SIZE", "5"))
     enable_caching: bool = os.getenv("ENABLE_CACHING", "True").lower() == "true"
     cache_ttl: int = int(os.getenv("CACHE_TTL", "3600"))
+
+    # Shopify Configuration
+    shopify_access_token: str = os.getenv("SHOPIFY_ACCESS_TOKEN", "")
+    shopify_api_key: str = os.getenv("SHOPIFY_API_KEY", "")
+    shopify_api_secret: str = os.getenv("SHOPIFY_API_SECRET", "")
+    shopify_shop_domain: str = os.getenv("SHOPIFY_SHOP_DOMAIN", "")
 
 CFG = Config()
 

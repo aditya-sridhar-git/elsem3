@@ -15,12 +15,14 @@ def run_pipeline(
     sku_master_path: str = CFG.sku_master_path,
     sales_history_path: str = CFG.sales_history_path,
     output_path: str = "agent_recommendations.csv",
-    verbose: bool = True
+    verbose: bool = True,
+    df_master: Optional[pd.DataFrame] = None,
+    df_sales: Optional[pd.DataFrame] = None
 ) -> pd.DataFrame:
     """
     End-to-end pipeline (OPTIMIZED):
 
-    1. Load master + sales data
+    1. Load master + sales data (from CSV or passed DFs)
     2. Agent 2 (ProfitDoctor): profitability metrics
     3. Agent 3 (InventorySentinel): inventory + risk metrics
     4. Agent 4 (StrategySupervisor): impact score + recommended actions
@@ -35,28 +37,33 @@ def run_pipeline(
     
     start_time = time.time()
     
-    # Check if files exist
-    if not os.path.exists(sku_master_path):
-        print(f"[ERROR] Master file not found: {sku_master_path}")
-        return pd.DataFrame()
-    if not os.path.exists(sales_history_path):
-        print(f"[ERROR] Sales history file not found: {sales_history_path}")
-        return pd.DataFrame()
+    # 1. Load Data
+    if df_master is None:
+        # Check if files exist
+        if not os.path.exists(sku_master_path):
+            print(f"[ERROR] Master file not found: {sku_master_path}")
+            return pd.DataFrame()
+            
+        if verbose:
+            print(f"[INFO] Loading master data from: {sku_master_path}")
+        load_start = time.time()
+        df_master = pd.read_csv(sku_master_path)
+        if verbose:
+            print(f"[INFO] Loaded {len(df_master)} SKUs in {time.time() - load_start:.2f}s")
+    
+    if df_sales is None:
+        if not os.path.exists(sales_history_path):
+            print(f"[ERROR] Sales history file not found: {sales_history_path}")
+            # Continue without sales history? Or return empty? 
+            # Inventory agent needs sales. Let's return empty DF or create dummy.
+            df_sales = pd.DataFrame(columns=["sku_id", "date", "units_sold"])
 
-    # Load data
-    if verbose:
-        print(f"[INFO] Loading master data from: {sku_master_path}")
-    load_start = time.time()
-    df_master = pd.read_csv(sku_master_path)
-    if verbose:
-        print(f"[INFO] Loaded {len(df_master)} SKUs in {time.time() - load_start:.2f}s")
-
-    if verbose:
-        print(f"[INFO] Loading sales history from: {sales_history_path}")
-    load_start = time.time()
-    df_sales = pd.read_csv(sales_history_path)
-    if verbose:
-        print(f"[INFO] Loaded {len(df_sales)} sales records in {time.time() - load_start:.2f}s")
+        if verbose:
+            print(f"[INFO] Loading sales history from: {sales_history_path}")
+        load_start = time.time()
+        df_sales = pd.read_csv(sales_history_path)
+        if verbose:
+            print(f"[INFO] Loaded {len(df_sales)} sales records in {time.time() - load_start:.2f}s")
 
     # Agent 2: Profit Doctor
     if verbose:

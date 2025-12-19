@@ -56,3 +56,16 @@ export interface SKURecommendation {
     llm_inventory_confidence?: number;
     llm_strategy_confidence?: number;
 }
+
+export interface Alert {
+    sku_id: string;
+    product_name: string;
+    risk_level: string;
+    recommended_action: string;
+    current_stock: number;
+    selling_price: number;
+    profit_per_unit: number;
+    impact_score: number;
+    suggested_reorder?: number;
+    suggested_price?: number;
+}

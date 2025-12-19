@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
+import time
 from typing import Optional
 from config import CFG, HAS_LANGCHAIN, llm
 
@@ -150,9 +151,16 @@ Provide: 1) Brief assessment 2) Pricing action 3) Cost tip. Be concise."""
                 df.at[idx, "llm_profit_insight"] = result.strip()
                 df.at[idx, "llm_confidence"] = 0.85  # Default confidence
                 
+                # Rate limiting
+                if hasattr(CFG, 'llm_delay'):
+                    time.sleep(CFG.llm_delay)
+                else:
+                    time.sleep(3) # Fallback
+                
             except Exception as e:
                 print(f"[WARNING] LLM analysis failed for {row['sku_id']}: {str(e)}")
-                df.at[idx, "llm_profit_insight"] = "Analysis unavailable"
+                # Leave empty so it doesn't show as a broken insight
+                df.at[idx, "llm_profit_insight"] = "" 
                 df.at[idx, "llm_confidence"] = 0.0
         
         print(f"[INFO] Profit Doctor: LLM analysis complete")
@@ -163,6 +171,7 @@ Provide: 1) Brief assessment 2) Pricing action 3) Cost tip. Be concise."""
 # Standalone usage
 if __name__ == "__main__":
     import sys
+    import os
     
     # Load sample data
     if os.path.exists(CFG.sku_master_path):

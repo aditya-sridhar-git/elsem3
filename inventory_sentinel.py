@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass
+import time
 from typing import Optional
 from functools import lru_cache
 from config import CFG, HAS_ARIMA, ARIMA, HAS_LANGCHAIN, llm
@@ -218,9 +219,15 @@ Provide: 1) Risk assessment 2) Demand pattern 3) Reorder strategy. Be concise.""
                 df.at[idx, "llm_inventory_insight"] = result.strip()
                 df.at[idx, "llm_inventory_confidence"] = 0.85
                 
+                # Rate limiting
+                if hasattr(CFG, 'llm_delay'):
+                    time.sleep(CFG.llm_delay)
+                else:
+                    time.sleep(3)
+                
             except Exception as e:
                 print(f"[WARNING] LLM analysis failed for {row['sku_id']}: {str(e)}")
-                df.at[idx, "llm_inventory_insight"] = "Analysis unavailable"
+                df.at[idx, "llm_inventory_insight"] = ""
                 df.at[idx, "llm_inventory_confidence"] = 0.0
         
         print(f"[INFO] Inventory Sentinel: LLM analysis complete")

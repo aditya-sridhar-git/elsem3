@@ -1,7 +1,7 @@
 // API client for backend communication
 
 import axios from 'axios';
-import type { AgentStatusResponse, MetricsSummary, SKURecommendation } from '../types';
+import type { AgentStatusResponse, MetricsSummary, SKURecommendation, Alert } from '../types';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -49,6 +49,23 @@ export const api = {
         const response = await apiClient.get(`/sku/${skuId}`);
         return response.data;
     },
+
+    // Get Alerts
+    getAlerts: async (): Promise<Alert[]> => {
+        const response = await apiClient.get('/alerts');
+        return response.data;
+    },
+
+    // Execute Alert Action
+    executeAction: async (skuId: string, actionType: string, value?: number, originalValue?: number) => {
+        const response = await apiClient.post('/alerts/action', {
+            sku_id: skuId,
+            action_type: actionType,
+            value: value,
+            original_value: originalValue
+        });
+        return response.data;
+    }
 };
 
 export default api;
