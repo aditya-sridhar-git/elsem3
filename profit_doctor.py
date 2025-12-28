@@ -68,13 +68,51 @@ class ProfitDoctorAgent:
         df["fee_gst"] = self.fee_gst_rate * df["payment_fee"]
         df["total_fees"] = df["payment_fee"] + df["fee_gst"]
         
-        # Ad cost per unit
-        df["ad_cost_per_unit"] = np.divide(
-            df["ad_spend_total_last_30_days"],
-            df["units_sold_last_30_days"],
-            out=np.zeros_like(df["ad_spend_total_last_30_days"], dtype=float),
-            where=df["units_sold_last_30_days"] > 0
-        )
+        # Ad cost per unit - Try to get from Ad Gateway first
+        try:
+            from ad_gateway import ad_gateway
+            from config import CFG
+            
+            if CFG.enable_ad_gateway:
+                # Get ad spend from Ad Gateway
+                ad_spend_map = ad_gateway.get_all_sku_ad_spend(days=30)
+                df["ad_spend_30d_gateway"] = df["sku_id"].map(ad_spend_map).fillna(0.0)
+                
+                # Use gateway data if available, otherwise fall back to column
+                if "ad_spend_total_last_30_days" in df.columns:
+                    df["ad_spend_30d"] = np.where(
+                        df["ad_spend_30d_gateway"] > 0,
+                        df["ad_spend_30d_gateway"],
+                        df["ad_spend_total_last_30_days"]
+                    )
+                else:
+                    df["ad_spend_30d"] = df["ad_spend_30d_gateway"]
+                
+                df["ad_cost_per_unit"] = np.divide(
+                    df["ad_spend_30d"],
+                    df["units_sold_last_30_days"],
+                    out=np.zeros_like(df["ad_spend_30d"], dtype=float),
+                    where=df["units_sold_last_30_days"] > 0
+                )
+                
+                # Also store ROAS from Ad Gateway
+                roas_map = ad_gateway.get_roas_by_sku()
+                df["ad_roas"] = df["sku_id"].map(roas_map).fillna(0.0)
+            else:
+                raise Exception("Ad Gateway disabled")
+                
+        except Exception as e:
+            # Fallback to static column data
+            if "ad_spend_total_last_30_days" in df.columns:
+                df["ad_cost_per_unit"] = np.divide(
+                    df["ad_spend_total_last_30_days"],
+                    df["units_sold_last_30_days"],
+                    out=np.zeros_like(df["ad_spend_total_last_30_days"], dtype=float),
+                    where=df["units_sold_last_30_days"] > 0
+                )
+            else:
+                df["ad_cost_per_unit"] = 0.0
+            df["ad_roas"] = 0.0
         
         # Profit per unit
         df["profit_per_unit"] = (

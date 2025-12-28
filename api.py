@@ -244,6 +244,26 @@ async def get_agent_status():
             "metrics": strategy_supervisor_metrics
         }
     ]
+    
+    # Add Ad Gateway status if enabled
+    try:
+        from ad_gateway import ad_gateway
+        from config import CFG
+        if CFG.enable_ad_gateway:
+            ad_summary = ad_gateway.get_summary()
+            agents.append({
+                "name": "Ad Gateway",
+                "status": "connected" if ad_summary.total_campaigns > 0 else "no_campaigns",
+                "metrics": {
+                    "total_campaigns": ad_summary.total_campaigns,
+                    "active_campaigns": ad_summary.active_campaigns,
+                    "total_spend_30d": ad_summary.total_spend_30d,
+                    "avg_roas": ad_summary.avg_roas,
+                    "platforms": ad_summary.platforms
+                }
+            })
+    except Exception:
+        pass  # Ad Gateway not available
 
     return {
         "status": execution_status["status"],
@@ -497,6 +517,222 @@ async def get_sku_seasonal_details(sku_id: str):
         },
         "llm_seasonal_insight": row.get("llm_seasonal_insight", "") if pd.notna(row.get("llm_seasonal_insight")) else ""
     }
+
+# ============================================================================
+# Ad Gateway Endpoints
+# ============================================================================
+
+from ad_gateway import (
+    AdGateway, AdPlatformCredentials, CampaignCreate, CampaignUpdate,
+    Campaign, AdMetrics, AdSummary
+)
+from ad_optimizer import AdOptimizerAgent
+
+# Initialize Ad Gateway
+ad_gateway_instance = AdGateway()
+
+
+@app.post("/api/ads/connect")
+async def connect_ad_platform(credentials: AdPlatformCredentials):
+    """
+    Connect to an ad platform API.
+    Accepts credentials for GOOGLE_ADS, META_ADS, or AMAZON_ADS.
+    """
+    result = ad_gateway_instance.connect_platform(credentials)
+    if not result.get("success"):
+        raise HTTPException(status_code=400, detail=result.get("error", "Connection failed"))
+    return result
+
+
+@app.get("/api/ads/platforms")
+async def get_connected_platforms():
+    """Get list of connected ad platforms"""
+    return {
+        "platforms": ad_gateway_instance.get_connected_platforms(),
+        "total": len(ad_gateway_instance.connected_platforms)
+    }
+
+
+@app.delete("/api/ads/disconnect/{platform}")
+async def disconnect_ad_platform(platform: str):
+    """Disconnect from an ad platform"""
+    success = ad_gateway_instance.disconnect_platform(platform)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Platform {platform} not connected")
+    return {"success": True, "message": f"Disconnected from {platform}"}
+
+
+@app.get("/api/ads/campaigns")
+async def get_ad_campaigns(
+    sku_id: Optional[str] = None,
+    platform: Optional[str] = None,
+    status: Optional[str] = None
+):
+    """
+    Get all ad campaigns with optional filters.
+    """
+    campaigns = ad_gateway_instance.get_campaigns(sku_id=sku_id, platform=platform, status=status)
+    return {
+        "total": len(campaigns),
+        "campaigns": [c.model_dump() for c in campaigns]
+    }
+
+
+@app.get("/api/ads/campaigns/{campaign_id}")
+async def get_ad_campaign(campaign_id: str):
+    """Get a specific campaign by ID"""
+    campaign = ad_gateway_instance.get_campaign(campaign_id)
+    if not campaign:
+        raise HTTPException(status_code=404, detail=f"Campaign {campaign_id} not found")
+    return campaign.model_dump()
+
+
+@app.post("/api/ads/campaigns")
+async def create_ad_campaign(data: CampaignCreate):
+    """Create a new ad campaign"""
+    campaign = ad_gateway_instance.create_campaign(data)
+    return {
+        "success": True,
+        "message": "Campaign created successfully",
+        "campaign": campaign.model_dump()
+    }
+
+
+@app.put("/api/ads/campaigns/{campaign_id}")
+async def update_ad_campaign(campaign_id: str, data: CampaignUpdate):
+    """Update an existing campaign"""
+    campaign = ad_gateway_instance.update_campaign(campaign_id, data)
+    if not campaign:
+        raise HTTPException(status_code=404, detail=f"Campaign {campaign_id} not found")
+    return {
+        "success": True,
+        "message": "Campaign updated successfully",
+        "campaign": campaign.model_dump()
+    }
+
+
+@app.post("/api/ads/campaigns/{campaign_id}/pause")
+async def pause_ad_campaign(campaign_id: str):
+    """Pause an active campaign"""
+    success = ad_gateway_instance.pause_campaign(campaign_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Campaign {campaign_id} not found")
+    return {"success": True, "message": f"Campaign {campaign_id} paused"}
+
+
+@app.post("/api/ads/campaigns/{campaign_id}/resume")
+async def resume_ad_campaign(campaign_id: str):
+    """Resume a paused campaign"""
+    success = ad_gateway_instance.resume_campaign(campaign_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Campaign {campaign_id} not found")
+    return {"success": True, "message": f"Campaign {campaign_id} resumed"}
+
+
+@app.delete("/api/ads/campaigns/{campaign_id}")
+async def delete_ad_campaign(campaign_id: str):
+    """Delete a campaign"""
+    success = ad_gateway_instance.delete_campaign(campaign_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Campaign {campaign_id} not found")
+    return {"success": True, "message": f"Campaign {campaign_id} deleted"}
+
+
+@app.get("/api/ads/metrics/summary")
+async def get_ad_metrics_summary():
+    """Get overall ad performance summary"""
+    summary = ad_gateway_instance.get_summary()
+    return summary.model_dump()
+
+
+@app.get("/api/ads/metrics/sku/{sku_id}")
+async def get_ad_metrics_by_sku(sku_id: str):
+    """Get ad metrics for a specific SKU"""
+    metrics = ad_gateway_instance.get_metrics_by_sku(sku_id)
+    campaigns = ad_gateway_instance.get_campaigns(sku_id=sku_id)
+    
+    return {
+        "sku_id": sku_id,
+        "metrics": metrics.model_dump(),
+        "campaigns": [c.model_dump() for c in campaigns],
+        "campaign_count": len(campaigns)
+    }
+
+
+@app.get("/api/ads/metrics/roas")
+async def get_roas_by_sku():
+    """Get ROAS for all SKUs"""
+    roas_map = ad_gateway_instance.get_roas_by_sku()
+    
+    # Sort by ROAS descending
+    sorted_roas = sorted(roas_map.items(), key=lambda x: x[1], reverse=True)
+    
+    return {
+        "total_skus": len(roas_map),
+        "avg_roas": round(sum(roas_map.values()) / max(1, len(roas_map)), 2),
+        "roas_by_sku": [{"sku_id": k, "roas": v} for k, v in sorted_roas]
+    }
+
+
+@app.get("/api/ads/budget/overview")
+async def get_budget_overview():
+    """Get budget allocation overview"""
+    campaigns = ad_gateway_instance.get_campaigns(status="ACTIVE")
+    
+    total_daily_budget = sum(c.daily_budget for c in campaigns)
+    total_spend_30d = sum(c.total_spend_30d for c in campaigns)
+    
+    # Group by platform
+    platform_budgets = {}
+    for c in campaigns:
+        if c.platform not in platform_budgets:
+            platform_budgets[c.platform] = {"daily_budget": 0, "spend_30d": 0, "campaigns": 0}
+        platform_budgets[c.platform]["daily_budget"] += c.daily_budget
+        platform_budgets[c.platform]["spend_30d"] += c.total_spend_30d
+        platform_budgets[c.platform]["campaigns"] += 1
+    
+    return {
+        "total_daily_budget": round(total_daily_budget, 2),
+        "total_spend_30d": round(total_spend_30d, 2),
+        "active_campaigns": len(campaigns),
+        "by_platform": platform_budgets
+    }
+
+
+@app.post("/api/ads/optimize")
+async def get_optimization_suggestions():
+    """Get AI-powered optimization suggestions"""
+    optimizer = AdOptimizerAgent()
+    campaigns = [c.model_dump() for c in ad_gateway_instance.get_campaigns()]
+    summary = ad_gateway_instance.get_summary().model_dump()
+    
+    # Get underperforming campaigns
+    underperforming = optimizer.identify_underperforming_ads(campaigns)
+    
+    # Get budget suggestions
+    budget_suggestions = optimizer.suggest_budget_reallocation(campaigns)
+    
+    # Generate report
+    report = optimizer.generate_optimization_report(campaigns, summary)
+    
+    return {
+        "underperforming_campaigns": [up.model_dump() for up in underperforming],
+        "budget_suggestions": [bs.model_dump() for bs in budget_suggestions],
+        "optimization_report": report,
+        "llm_enabled": optimizer.has_llm
+    }
+
+
+@app.get("/api/ads/spend/{sku_id}")
+async def get_ad_spend_for_sku(sku_id: str, days: int = 30):
+    """Get total ad spend for a SKU"""
+    spend = ad_gateway_instance.get_ad_spend_by_sku(sku_id, days)
+    return {
+        "sku_id": sku_id,
+        "days": days,
+        "total_spend": round(spend, 2)
+    }
+
 
 # ============================================================================
 # n8n Integration Endpoints
