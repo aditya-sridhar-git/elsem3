@@ -211,6 +211,17 @@ async def get_agent_status():
         "avg_impact_score": float(pipeline_data["impact_score"].mean())
     }
 
+    # Seasonal Analyst metrics (check if columns exist)
+    seasonal_analyst_metrics = {}
+    if "seasonality_strength" in pipeline_data.columns:
+        seasonal_analyst_metrics = {
+            "strong_seasonality_count": int((pipeline_data["seasonality_strength"] > 0.3).sum()),
+            "seasonal_risk_count": int(pipeline_data["seasonal_risk_flag"].sum()) if "seasonal_risk_flag" in pipeline_data.columns else 0,
+            "avg_seasonality_strength": float(pipeline_data["seasonality_strength"].mean()),
+            "rising_trend_count": int((pipeline_data["seasonal_trend"] == "RISING").sum()) if "seasonal_trend" in pipeline_data.columns else 0,
+            "falling_trend_count": int((pipeline_data["seasonal_trend"] == "FALLING").sum()) if "seasonal_trend" in pipeline_data.columns else 0
+        }
+
     agents = [
         {
             "name": "Profit Doctor",
@@ -221,6 +232,11 @@ async def get_agent_status():
             "name": "Inventory Sentinel",
             "status": "completed",
             "metrics": inventory_sentinel_metrics
+        },
+        {
+            "name": "Seasonal Analyst",
+            "status": "completed" if seasonal_analyst_metrics else "disabled",
+            "metrics": seasonal_analyst_metrics
         },
         {
             "name": "Strategy Supervisor",
@@ -361,6 +377,126 @@ async def debug_columns():
         "first_row_llm_profit": str(pipeline_data.iloc[0].get("llm_profit_insight", "NOT FOUND")) if len(pipeline_data) > 0 else "NO DATA"
     }
 
+
+# ============================================================================
+# Seasonal Analysis Endpoints
+# ============================================================================
+
+@app.get("/api/seasonal/analysis")
+async def get_seasonal_analysis():
+    """
+    Get seasonal analysis for all SKUs.
+    Returns seasonal indices, trends, and risk flags.
+    """
+    if pipeline_data is None:
+        raise HTTPException(status_code=404, detail="No pipeline data available. Run the pipeline first.")
+    
+    # Check if seasonal columns exist
+    if "seasonality_strength" not in pipeline_data.columns:
+        return {
+            "status": "disabled",
+            "message": "Seasonal analysis not available. Run pipeline with seasonal data.",
+            "analysis": []
+        }
+    
+    analysis = []
+    for _, row in pipeline_data.iterrows():
+        item = {
+            "sku_id": row["sku_id"],
+            "product_name": row["product_name"],
+            "category": row["category"],
+            "seasonal_index_current": float(row.get("seasonal_index_current", 1.0)),
+            "seasonal_index_next": float(row.get("seasonal_index_next", 1.0)),
+            "peak_month": row.get("peak_month", ""),
+            "trough_month": row.get("trough_month", ""),
+            "seasonal_trend": row.get("seasonal_trend", "STABLE"),
+            "seasonality_strength": float(row.get("seasonality_strength", 0.0)),
+            "seasonal_forecast": float(row.get("seasonal_forecast", 0.0)),
+            "seasonal_risk_flag": bool(row.get("seasonal_risk_flag", False)),
+            "llm_seasonal_insight": row.get("llm_seasonal_insight", "") if pd.notna(row.get("llm_seasonal_insight")) else ""
+        }
+        analysis.append(item)
+    
+    # Sort by seasonality strength (most seasonal first)
+    analysis.sort(key=lambda x: x["seasonality_strength"], reverse=True)
+    
+    return {
+        "status": "success",
+        "total_skus": len(analysis),
+        "strong_seasonality_count": sum(1 for a in analysis if a["seasonality_strength"] > 0.3),
+        "seasonal_risk_count": sum(1 for a in analysis if a["seasonal_risk_flag"]),
+        "analysis": analysis
+    }
+
+
+@app.get("/api/seasonal/risks")
+async def get_seasonal_risks():
+    """
+    Get SKUs with seasonal risk flags.
+    These are products with high stock entering low season.
+    """
+    if pipeline_data is None:
+        raise HTTPException(status_code=404, detail="No pipeline data available.")
+    
+    if "seasonal_risk_flag" not in pipeline_data.columns:
+        return {"risks": [], "message": "Seasonal analysis not available"}
+    
+    risk_items = pipeline_data[pipeline_data["seasonal_risk_flag"] == True]
+    
+    risks = []
+    for _, row in risk_items.iterrows():
+        risks.append({
+            "sku_id": row["sku_id"],
+            "product_name": row["product_name"],
+            "current_stock": int(row["current_stock"]),
+            "days_of_stock_left": float(row.get("days_of_stock_left", 0)),
+            "seasonal_index_next": float(row.get("seasonal_index_next", 1.0)),
+            "seasonal_trend": row.get("seasonal_trend", "STABLE"),
+            "profit_per_unit": float(row.get("profit_per_unit", 0)),
+            "recommendation": "Consider discount promotion before low season"
+        })
+    
+    return {
+        "total_risks": len(risks),
+        "risks": risks
+    }
+
+
+@app.get("/api/seasonal/sku/{sku_id}")
+async def get_sku_seasonal_details(sku_id: str):
+    """
+    Get detailed seasonal analysis for a specific SKU.
+    """
+    if pipeline_data is None:
+        raise HTTPException(status_code=404, detail="No pipeline data available.")
+    
+    sku_data = pipeline_data[pipeline_data["sku_id"] == sku_id]
+    if sku_data.empty:
+        raise HTTPException(status_code=404, detail=f"SKU {sku_id} not found")
+    
+    row = sku_data.iloc[0]
+    
+    return {
+        "sku_id": row["sku_id"],
+        "product_name": row["product_name"],
+        "category": row["category"],
+        "seasonal_metrics": {
+            "seasonal_index_current": float(row.get("seasonal_index_current", 1.0)),
+            "seasonal_index_next": float(row.get("seasonal_index_next", 1.0)),
+            "peak_month": row.get("peak_month", ""),
+            "trough_month": row.get("trough_month", ""),
+            "seasonal_trend": row.get("seasonal_trend", "STABLE"),
+            "seasonality_strength": float(row.get("seasonality_strength", 0.0)),
+            "seasonal_forecast": float(row.get("seasonal_forecast", 0.0)),
+            "seasonal_risk_flag": bool(row.get("seasonal_risk_flag", False))
+        },
+        "inventory_metrics": {
+            "current_stock": int(row["current_stock"]),
+            "days_of_stock_left": float(row.get("days_of_stock_left", 0)),
+            "sales_velocity_per_day": float(row.get("sales_velocity_per_day", 0))
+        },
+        "llm_seasonal_insight": row.get("llm_seasonal_insight", "") if pd.notna(row.get("llm_seasonal_insight")) else ""
+    }
 
 # ============================================================================
 # n8n Integration Endpoints

@@ -17,3 +17,6 @@ groq>=0.4.0
 
 # Utilities
 tiktoken>=0.5.0
+
+# Statistical Analysis (ARIMA/SARIMA for seasonal analysis)
+statsmodels>=0.14.0
