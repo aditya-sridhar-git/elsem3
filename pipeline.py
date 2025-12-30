@@ -8,6 +8,7 @@ from typing import Optional
 from config import CFG
 from profit_doctor import ProfitDoctorAgent
 from inventory_sentinel import InventorySentinelAgent
+from seasonal_analyst import SeasonalAnalystAgent
 from strategy_supervisor import StrategySupervisorAgent
 
 
@@ -83,12 +84,21 @@ def run_pipeline(
     if verbose:
         print(f"[INFO] InventorySentinel completed in {time.time() - agent_start:.2f}s")
 
-    # Agent 4: Strategy Supervisor
+    # Agent 4: Seasonal Analyst
+    if verbose:
+        print("[INFO] Running SeasonalAnalystAgent...")
+    agent_start = time.time()
+    seasonal_agent = SeasonalAnalystAgent()
+    df_seasonal = seasonal_agent.compute_seasonal_metrics(df_inventory, df_sales)
+    if verbose:
+        print(f"[INFO] SeasonalAnalyst completed in {time.time() - agent_start:.2f}s")
+
+    # Agent 5: Strategy Supervisor
     if verbose:
         print("[INFO] Running StrategySupervisorAgent...")
     agent_start = time.time()
     strategy_agent = StrategySupervisorAgent()
-    df_ranked = strategy_agent.rank_actions(df_inventory)
+    df_ranked = strategy_agent.rank_actions(df_seasonal)
     if verbose:
         print(f"[INFO] StrategySupervisor completed in {time.time() - agent_start:.2f}s")
 
@@ -100,9 +110,15 @@ def run_pipeline(
         "sales_velocity_per_day", "days_of_stock_left", "risk_level",
         "reorder_qty_suggested", "profit_at_risk",
         "impact_score", "recommended_action",
+        # Seasonal metrics
+        "seasonal_index_current", "seasonal_index_next",
+        "peak_month", "trough_month", "seasonal_trend",
+        "seasonality_strength", "seasonal_forecast", "seasonal_risk_flag",
         # LangChain LLM insights
         "llm_profit_insight", "llm_inventory_insight", "llm_strategy_insight",
+        "llm_seasonal_insight",
         "llm_profit_confidence", "llm_inventory_confidence", "llm_strategy_confidence",
+        "llm_seasonal_confidence",
     ]
 
     # Filter to existing columns
