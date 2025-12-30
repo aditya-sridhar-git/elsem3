@@ -1,21 +1,6 @@
 sku_id,category,product_name,selling_price,mrp,cogs,shipping_cost_per_unit,platform_fee_percent,platform_fixed_fee,ad_spend_total_last_30_days,units_sold_last_30_days,current_stock,lead_time_days,is_hero
-SKU_ELEC_001,Electronics,Wireless Bluetooth Earbuds Pro,1999,2499,850,75,2.0,3,8500,180,45,12,True
-SKU_ELEC_002,Electronics,Smart Watch Fitness Tracker,3499,4299,1400,80,2.0,3,12000,120,30,14,True
-SKU_ELEC_003,Electronics,Portable Power Bank 20000mAh,1299,1599,520,60,2.0,3,4500,95,80,10,False
-SKU_ELEC_004,Electronics,USB-C Fast Charging Cable 2m,399,549,80,30,2.0,3,2000,250,200,7,False
-SKU_FASH_001,Fashion,Men's Premium Cotton T-Shirt,799,999,280,50,2.0,3,3500,140,120,8,False
-SKU_FASH_002,Fashion,Women's Ethnic Kurti Set,1499,1999,500,60,2.0,3,6000,90,75,10,True
-SKU_FASH_003,Fashion,Unisex Running Shoes,2499,3199,900,70,2.0,3,9000,85,40,12,True
-SKU_FASH_004,Fashion,Kids Winter Jacket,1799,2299,650,65,2.0,3,5000,60,100,14,False
-SKU_HOME_001,Home,Stainless Steel Water Bottle 1L,599,799,180,45,2.0,3,2500,110,90,7,False
-SKU_HOME_002,Home,Bamboo Cutting Board Set,899,1199,300,55,2.0,3,3000,70,60,10,False
-SKU_HOME_003,Home,LED Desk Lamp with USB Port,1299,1699,450,60,2.0,3,4000,55,35,12,False
-SKU_HOME_004,Home,Air Purifier HEPA Filter,4999,6499,2000,90,2.0,3,15000,45,25,15,True
-SKU_BEAUTY_001,Beauty,Vitamin C Face Serum 30ml,699,899,180,35,2.0,3,4000,160,110,7,True
-SKU_BEAUTY_002,Beauty,Organic Hair Oil 200ml,449,599,120,30,2.0,3,2500,130,150,7,False
-SKU_BEAUTY_003,Beauty,Sunscreen SPF 50 100ml,549,749,150,35,2.0,3,3000,145,85,8,False
-SKU_BEAUTY_004,Beauty,Men's Grooming Kit,1299,1699,420,50,2.0,3,5500,75,55,10,False
-SKU_SPORTS_001,Sports,Yoga Mat 6mm Premium,999,1299,320,55,2.0,3,4500,95,70,9,False
-SKU_SPORTS_002,Sports,Resistance Bands Set,599,799,150,40,2.0,3,2000,120,130,7,False
-SKU_SPORTS_003,Sports,Cricket Bat English Willow,3999,4999,1600,100,2.0,3,8000,40,20,14,True
-SKU_SPORTS_004,Sports,Football Official Size,799,999,280,50,2.0,3,2500,65,80,8,False
+SKU_SHOES_9083792720088,Footwear,Classic Leather Loafers,2499,3499,900,70,2.0,3,8000,100,5,10,False
+SKU_SHOES_9083792785624,Footwear,Limited Edition Hype Kicks,2499,3499,900,70,2.0,3,8000,100,20,10,True
+SKU_SHOES_9083792654552,Footwear,Urban High-Top Sneakers,2499,3499,900,70,2.0,3,8000,100,45,10,False
+SKU_SHOES_9083792687320,Footwear,Marathon Pro Running Shoes,2499,3499,900,70,2.0,3,8000,100,120,10,True
+SKU_SHOES_9083792752856,Footwear,Canvas Slip-Ons,2499,3499,900,70,2.0,3,8000,100,200,10,False
