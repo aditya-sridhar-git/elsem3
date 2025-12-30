@@ -56,7 +56,6 @@ export const api = {
         return response.data;
     },
 
-    // Execute Alert Action
     executeAction: async (skuId: string, actionType: string, value?: number, originalValue?: number) => {
         const response = await apiClient.post('/alerts/action', {
             sku_id: skuId,
@@ -64,6 +63,38 @@ export const api = {
             value: value,
             original_value: originalValue
         });
+        return response.data;
+    },
+
+    // Seasonal Analysis
+    getSeasonalAnalysis: async (): Promise<any> => {
+        const response = await apiClient.get('/seasonal/analysis');
+        return response.data;
+    },
+
+    // Ad Gateway
+    getAdCampaigns: async (): Promise<any> => {
+        const response = await apiClient.get('/ads/campaigns');
+        return response.data;
+    },
+
+    getAdMetrics: async (): Promise<any> => {
+        const response = await apiClient.get('/ads/metrics/summary');
+        return response.data;
+    },
+
+    connectAdPlatform: async (credentials: any) => {
+        const response = await apiClient.post('/ads/connect', credentials);
+        return response.data;
+    },
+
+    createCampaign: async (data: any) => {
+        const response = await apiClient.post('/ads/campaigns', data);
+        return response.data;
+    },
+
+    toggleCampaign: async (campaignId: string, action: 'pause' | 'resume') => {
+        const response = await apiClient.post(`/ads/campaigns/${campaignId}/${action}`);
         return response.data;
     }
 };

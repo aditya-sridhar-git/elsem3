@@ -4,10 +4,12 @@ import AgentStatusCard from './AgentStatusCard';
 import MetricsChart from './MetricsChart';
 import RecommendationsTable from './RecommendationsTable';
 import AlertsTab from './AlertsTab';
+import SeasonalTab from './SeasonalTab';
+import AdsTab from './AdsTab';
 import { api } from '../services/api';
 import type { AgentStatusResponse, MetricsSummary, SKURecommendation } from '../types';
 
-type Tab = 'overview' | 'alerts';
+type Tab = 'overview' | 'alerts' | 'seasonal' | 'ads';
 
 const Dashboard: React.FC = () => {
     const [activeTab, setActiveTab] = useState<Tab>('overview');
@@ -119,8 +121,8 @@ const Dashboard: React.FC = () => {
                                 <button
                                     onClick={() => setActiveTab('overview')}
                                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'overview'
-                                            ? 'bg-blue-600 text-white shadow-lg'
-                                            : 'text-slate-400 hover:text-white'
+                                        ? 'bg-blue-600 text-white shadow-lg'
+                                        : 'text-slate-400 hover:text-white'
                                         }`}
                                 >
                                     Overview
@@ -128,8 +130,8 @@ const Dashboard: React.FC = () => {
                                 <button
                                     onClick={() => setActiveTab('alerts')}
                                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'alerts'
-                                            ? 'bg-blue-600 text-white shadow-lg'
-                                            : 'text-slate-400 hover:text-white'
+                                        ? 'bg-blue-600 text-white shadow-lg'
+                                        : 'text-slate-400 hover:text-white'
                                         }`}
                                 >
                                     <Bell className="w-4 h-4" />
@@ -140,6 +142,24 @@ const Dashboard: React.FC = () => {
                                             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                                         </span>
                                     )}
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('seasonal')}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'seasonal'
+                                        ? 'bg-blue-600 text-white shadow-lg'
+                                        : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    Seasonal
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('ads')}
+                                    className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${activeTab === 'ads'
+                                        ? 'bg-purple-600 text-white shadow-lg'
+                                        : 'text-slate-400 hover:text-white'
+                                        }`}
+                                >
+                                    Ads
                                 </button>
                             </div>
                             <button
@@ -226,9 +246,17 @@ const Dashboard: React.FC = () => {
                             <RecommendationsTable recommendations={recommendations} />
                         )}
                     </div>
-                ) : (
+                ) : activeTab === 'alerts' ? (
                     <div className="animate-in fade-in duration-300">
                         <AlertsTab />
+                    </div>
+                ) : activeTab === 'seasonal' ? (
+                    <div className="animate-in fade-in duration-300">
+                        <SeasonalTab />
+                    </div>
+                ) : (
+                    <div className="animate-in fade-in duration-300">
+                        <AdsTab />
                     </div>
                 )}
 

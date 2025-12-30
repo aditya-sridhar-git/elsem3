@@ -1,21 +1,227 @@
-sku_id,category,product_name,selling_price,cogs,current_stock,lead_time_days,profit_per_unit,loss_per_day,sales_velocity_per_day,days_of_stock_left,risk_level,reorder_qty_suggested,profit_at_risk,impact_score,recommended_action,seasonal_index_current,seasonal_index_next,peak_month,trough_month,seasonal_trend,seasonality_strength,seasonal_forecast,seasonal_risk_flag,llm_seasonal_insight,llm_seasonal_confidence
-SKU_ELEC_002,Electronics,Smart Watch Fitness Tracker,3499,1400,30,14,1079.8797666666667,0.0,5.3105756728416935,5.649105077895816,CRITICAL,111,32396.393,5734.783218453965,REORDER_IMMEDIATELY,0.598,1.123,November,December,RISING,0.208,174.8,False,,0.0
-SKU_ELEC_001,Electronics,Wireless Bluetooth Earbuds Pro,1999,850,45,12,327.51843333333335,0.0,7.995993819299265,5.627818257111111,CRITICAL,143,14738.329500000002,2618.835368639912,REORDER_IMMEDIATELY,0.514,1.236,October,December,RISING,0.452,229.0,False,,0.0
-SKU_HOME_004,Home,Air Purifier HEPA Filter,4999,2000,25,15,1019.428488888889,0.0,1.8129728683833952,13.789505864085093,CRITICAL,40,25485.712222222228,1848.1961916126395,REORDER_IMMEDIATELY,0.688,1.557,January,June,RISING,0.94,60.4,False,,0.0
-SKU_SPORTS_003,Sports,Cricket Bat English Willow,3999,1600,20,14,1080.8748500000002,0.0,1.385644263130075,14.433719051974695,WARNING,29,21617.497,1497.7080350640801,PLAN_REORDER,0.511,1.121,May,December,RISING,0.992,35.5,False,,0.0
-SKU_FASH_003,Fashion,Unisex Running Shoes,2499,900,40,12,391.8771294117647,0.0,3.3976231632780194,11.77293598428617,CRITICAL,61,15675.08517647059,1331.45081204831,REORDER_IMMEDIATELY,0.595,1.258,October,December,RISING,0.413,109.2,False,,0.0
-SKU_BEAUTY_001,Beauty,Vitamin C Face Serum 30ml,699,180,110,7,195.81085000000002,0.0,6.046921284160807,18.191075231644234,SAFE,0,21539.193500000005,1184.0527965346193,MONITOR,0.493,0.945,May,December,RISING,0.932,108.3,False,,0.0
-SKU_SPORTS_001,Sports,Yoga Mat 6mm Premium,999,320,70,9,195.75475789473683,0.0,4.677686295894892,14.964663205703118,SAFE,0,13702.833052631579,915.6793483604329,MONITOR,0.687,1.273,January,December,RISING,0.706,116.0,False,,0.0
-SKU_FASH_002,Fashion,Women's Ethnic Kurti Set,1499,500,75,10,198.53515555555555,0.0,3.8263058169972575,19.601151498877634,SAFE,0,14890.136666666665,759.6562205806775,MONITOR,0.527,1.121,October,December,RISING,0.546,120.9,False,,0.0
-SKU_ELEC_003,Electronics,Portable Power Bank 20000mAh,1299,520,80,10,243.8839157894737,0.0,3.0781674308081612,25.989489460291086,SAFE,0,19510.713263157897,750.7155264811182,MONITOR,0.516,0.899,May,December,RISING,0.896,58.5,False,,0.0
-SKU_FASH_004,Fashion,Kids Winter Jacket,1799,650,100,14,288.5937666666666,0.0,2.5953588069281106,38.53031794026232,SAFE,0,28859.37666666666,749.0043739428894,MONITOR,0.723,1.581,January,April,RISING,0.913,79.7,False,,0.0
-SKU_HOME_001,Home,Stainless Steel Water Bottle 1L,599,180,90,7,128.90987272727273,0.0,4.504437516068326,19.980297135646808,SAFE,0,11601.888545454543,580.6664669043204,MONITOR,0.49,0.971,May,December,RISING,0.988,106.1,False,,0.0
-SKU_BEAUTY_004,Beauty,Men's Grooming Kit,1299,420,55,10,94.39160000000004,0.0,3.5525387915768785,15.481885836237963,SAFE,0,5191.538000000002,335.3298205990082,MONITOR,0.611,1.316,October,December,RISING,0.616,107.6,False,,0.0
-SKU_HOME_003,Home,LED Desk Lamp with USB Port,1299,450,35,12,83.67778181818181,0.0,2.284674683006031,15.319467695045844,WARNING,41,2928.7223636363633,191.17650965010236,PLAN_REORDER,0.685,1.56,January,April,RISING,0.882,62.0,False,,0.0
-SKU_SPORTS_002,Sports,Resistance Bands Set,599,150,130,7,-318.75631666666663,1275.0252666666665,6.549317990635332,19.849395034091028,SAFE,0,0.0,64.2349685961124,PAUSE_ADS_OR_INCREASE_PRICE,0.716,1.298,January,December,RISING,0.733,163.0,False,,0.0
-SKU_ELEC_004,Electronics,USB-C Fast Charging Cable 2m,399,80,200,7,-92.22204000000002,768.5170000000003,9.419169728292477,21.23329399185339,SAFE,0,0.0,36.193960310390764,PAUSE_ADS_OR_INCREASE_PRICE,0.561,1.134,October,December,RISING,0.534,311.2,False,,0.0
-SKU_FASH_001,Fashion,Men's Premium Cotton T-Shirt,799,280,120,8,-150.73461428571431,703.4282000000002,5.996416757153919,20.011951280210155,SAFE,0,0.0,35.1504053827885,PAUSE_ADS_OR_INCREASE_PRICE,0.491,0.96,May,December,RISING,0.982,126.6,False,,0.0
-SKU_BEAUTY_003,Beauty,Sunscreen SPF 50 100ml,549,150,85,8,-75.92426206896553,366.9672666666667,6.052156493582328,14.044580653215679,SAFE,0,0.0,26.12874501045676,PAUSE_ADS_OR_INCREASE_PRICE,0.502,1.004,May,December,RISING,0.948,131.9,False,,0.0
-SKU_HOME_002,Home,Bamboo Cutting Board Set,899,300,60,10,-187.7689714285715,438.12760000000014,2.2885126257329267,26.217902110452286,SAFE,0,0.0,16.711009071367762,PAUSE_ADS_OR_INCREASE_PRICE,0.563,1.194,October,December,RISING,0.221,71.9,False,,0.0
-SKU_BEAUTY_002,Beauty,Organic Hair Oil 200ml,449,120,150,7,-127.3604,551.8950666666666,4.123624695766905,36.37576430124256,SAFE,0,0.0,15.172054175857259,PAUSE_ADS_OR_INCREASE_PRICE,0.475,1.14,August,December,RISING,1.0,89.4,False,,0.0
-SKU_SPORTS_004,Sports,Football Official Size,799,280,80,8,-132.28486153846148,286.61719999999985,2.1602426505096832,37.03287683035281,SAFE,0,0.0,7.739533747620796,PAUSE_ADS_OR_INCREASE_PRICE,0.545,1.142,October,December,RISING,0.654,87.1,False,,0.0
+sku_id,category,product_name,selling_price,cogs,current_stock,lead_time_days,profit_per_unit,loss_per_day,sales_velocity_per_day,days_of_stock_left,risk_level,reorder_qty_suggested,profit_at_risk,impact_score,recommended_action,seasonal_index_current,seasonal_index_next,peak_month,trough_month,seasonal_trend,seasonality_strength,seasonal_forecast,seasonal_risk_flag,llm_profit_insight,llm_inventory_insight,llm_strategy_insight,llm_seasonal_insight,llm_inventory_confidence,llm_strategy_confidence,llm_seasonal_confidence
+SKU_ELEC_002,Electronics,Smart Watch Fitness Tracker,3499,1400,30,14,1079.8797666666667,0.0,5.310575716306595,5.649105031660189,CRITICAL,111,32396.393,5734.783265390833,REORDER_IMMEDIATELY,0.598,1.123,November,December,RISING,0.208,174.8,False,"1. **Brief Assessment**: The smart watch fitness tracker has a significant profit margin of approximately 77% (₹1079.88 / ₹1400), indicating a healthy profit per unit. With no daily loss, the product's current pricing strategy appears effective.
+
+2. **Pricing Action**: Consider a price increase to ₹3999 to capture more revenue, as the high profit margin suggests elasticity in pricing. Monitor customer demand and competitor pricing to adjust accordingly.
+
+3. **Cost Tip**: Review the supply chain and manufacturing process to identify opportunities to reduce COGS (currently ₹1400) by 5-10%, which could further increase profit margins and competitiveness.","**Analysis:**
+
+1. **Risk Assessment:** CRITICAL - The stock will be depleted in 5.6 days, and with a lead time of 14 days, there's a high risk of stockout, potentially resulting in lost sales and revenue.
+
+2. **Demand Pattern:** Steady demand - The velocity of 5.3 units/day indicates a consistent demand for the product.
+
+3. **Reorder Strategy:** Reorder immediately - To avoid stockout, reorder 5.3 units/day * 14 days (lead time) = 74 units. This will ensure stock availability and minimize the risk of lost sales. Consider expedited shipping to reduce lead time, if possible.","**Analysis of Smart Watch Fitness Tracker**
+
+1. **Why this action**: The stock level is critically low (30 units, 5.6 days left), and the profit at risk is substantial (₹32396.39), necessitating an immediate reorder to avoid stockouts and potential loss of sales and revenue.
+
+2. **How to implement**: Expedite the reorder process by contacting the supplier, verifying the inventory levels, and arranging for urgent shipping to ensure timely replenishment of stock.
+
+3. **Expected outcome**: Reordering immediately will help maintain stock levels, prevent stockouts, and minimize the loss of potential sales, thereby protecting the profit at risk (₹32396.39) and maintaining customer satisfaction.
+
+4. **Priority**: **HIGH** - Given the critical risk level and significant profit at risk, this action should be prioritized to prevent stockouts and potential long-term damage to the business.","Based on the analysis:
+1) Increase inventory for next month (index: 1.12).
+2) Maintain pricing due to rising trend.
+3) Watch November for peak sales and adjust strategies accordingly.",0.85,0.9,0.85
+SKU_ELEC_001,Electronics,Wireless Bluetooth Earbuds Pro,1999,850,45,12,327.51843333333335,0.0,7.995993731556091,5.627818318867367,CRITICAL,143,14738.329500000002,2618.835339902405,REORDER_IMMEDIATELY,0.514,1.236,October,December,RISING,0.452,229.0,False,"1. **Brief Assessment**: The Wireless Bluetooth Earbuds Pro has a significant profit margin of approximately 38.5% (₹327.52 / ₹850), indicating a healthy profitability per unit. With no daily loss, the product's current pricing strategy seems effective.
+
+2. **Pricing Action**: Consider a premium pricing strategy to maximize profits, potentially increasing the selling price by 5-10% (₹1999 to ₹2099-₹2199) to capitalize on the product's demand and perceived value.
+
+3. **Cost Tip**: Focus on optimizing the COGS (₹850) by exploring cost-reduction opportunities, such as negotiating with suppliers, streamlining manufacturing processes, or sourcing alternative components to further increase profit margins.","**Analysis:**
+
+1. **Risk Assessment:** CRITICAL - The current stock (45 units) will be depleted in 5.6 days, but the lead time is 12 days, indicating a high risk of stockout before new stock arrives.
+
+2. **Demand Pattern:** The demand pattern appears to be relatively stable, with a consistent velocity of 8.0 units/day.
+
+3. **Reorder Strategy:** Reorder immediately to avoid stockout. Consider ordering a larger quantity to account for the 12-day lead time and maintain a safe stock level. Recommended reorder quantity: 8.0 units/day * 12 days (lead time) + safety stock = 96 + safety stock.","**Analysis of Wireless Bluetooth Earbuds Pro**
+
+1. **Why this action**: The stock level is critically low (45 units, 5.6 days left), and the profit at risk is substantial (₹14738.33), necessitating an immediate reorder to avoid stockouts and potential loss of sales.
+2. **How to implement**: Expedite a new shipment of Wireless Bluetooth Earbuds Pro, considering options like air freight or express shipping to minimize lead time.
+3. **Expected outcome**: Replenished stock, reduced risk of stockouts, and protection of potential sales and revenue (₹14738.33).
+4. **Priority**: **HIGH** - given the critical risk level and significant profit at risk, immediate action is required to mitigate potential losses and ensure business continuity.","Based on the analysis:
+1) Increase inventory for the upcoming peak season (October).
+2) Maintain current pricing due to rising trend.
+3) Watch for October sales spike and adjust inventory accordingly.",0.85,0.9,0.85
+SKU_HOME_004,Home,Air Purifier HEPA Filter,4999,2000,25,15,1019.428488888889,0.0,1.812973198931909,13.789503349927315,CRITICAL,40,25485.71222222222,1848.1965285832107,REORDER_IMMEDIATELY,0.688,1.557,January,June,RISING,0.94,60.4,False,"1. **Brief Assessment**: The air purifier HEPA filter has a significant profit margin of 51% (₹1019.428488888889 / ₹2000), indicating a well-priced product with potential for further optimization.
+
+2. **Pricing Action**: Consider a price increase to ₹5499 to capture more value, as the current profit margin suggests elasticity in demand. Monitor sales volume and adjust accordingly.
+
+3. **Cost Tip**: Investigate opportunities to reduce COGS by 5-10% (₹100-₹200) through supplier negotiations, economies of scale, or process improvements to further boost profit margins.","**Analysis:**
+
+1. **Risk Assessment:** CRITICAL - The current stock (25 units) will be depleted in 13.8 days, but the lead time is 15 days, indicating a high risk of stockout before new stock arrives.
+
+2. **Demand Pattern:** Steady demand at 1.8 units/day, suggesting a consistent customer need for the product.
+
+3. **Reorder Strategy:** Reorder immediately to avoid stockout. Consider ordering a buffer stock to account for the lead time and demand variability. Recommended reorder quantity: at least 27 units (1.8 units/day * 15 days) to cover the lead time and some extra for safety stock.","**Analysis of Air Purifier HEPA Filter**
+
+1. **Why this action**: The stock level is critically low, with only 25 units left and a limited timeframe of 13.8 days, posing a significant risk to sales and revenue.
+2. **How to implement**: Expedite the reorder process by contacting suppliers, verifying inventory, and arranging for immediate shipment to replenish stock.
+3. **Expected outcome**: Replenishing stock will prevent stockouts, ensure continuous sales, and protect profit margins, ultimately saving ₹25485.71 in potential lost revenue.
+4. **Priority**: **High**, as the risk is critical and the potential impact on sales and revenue is significant (1848.0), necessitating immediate attention to mitigate losses.","Recommendations: 
+1) Increase inventory for upcoming peak season.
+2) Maintain current pricing due to low current month index.
+3) Watch January for peak sales.",0.85,0.9,0.85
+SKU_SPORTS_003,Sports,Cricket Bat English Willow,3999,1600,20,14,1080.8748500000002,0.0,1.3856442653545753,14.433719028802937,WARNING,29,21617.497000000003,1497.708037468487,PLAN_REORDER,0.511,1.121,May,December,RISING,0.992,35.5,False,"1. **Brief Assessment**: The product has a significant profit margin of 67.7% (₹2399 / ₹3999 * 100 - 100 = 67.7% is incorrect, correct calculation: (₹2399 / ₹3999) * 100 = 60%, and then (₹2399 - ₹1600) / ₹3999 * 100 = 67.7% is incorrect, correct calculation: (₹2399 - ₹1600) = ₹2399 - ₹1600 = ₹799, then (₹2399 - ₹1600) / ₹3999 * 100 = (₹2399 - ₹1600) / ₹3999 * 100 =  ₹799 / ₹3999 * 100 = 20%,  (₹2399 - ₹1600) / ₹1600 * 100 = 67.7% is incorrect, correct calculation: (₹2399 - ₹1600) = ₹2399 - ₹1600 = ₹799, then (₹2399 - ₹1600) / ₹1600 * 100 = ₹799 / ₹1600 * 100 = 49.9%, correct calculation: (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹1600 * 100 = ₹2399 / ₹1600 * 100 = 149.9%, correct calculation: Profit/Unit: ₹2399, then (₹2399 / ₹3999) * 100 = 60%, and then (₹2399 / ₹1600) * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹1600) = ₹2399, then (₹3999 - ₹1600) / ₹3999 * 100 = 60%, and then (₹3999 - ₹1600) / ₹1600 * 100 = 149.9%, correct calculation: (₹3999 - ₹","**Analysis:**
+
+1. **Risk Assessment:** WARNING - Stockout risk is high due to low stock (20 units) and high velocity (1.4 units/day). With only 14.4 days of stock left, there's a high chance of running out of stock before the next shipment arrives, considering the lead time is 14 days.
+
+2. **Demand Pattern:** Steady demand, with a constant velocity of 1.4 units/day, indicating a consistent customer demand for the product.
+
+3. **Reorder Strategy:** Reorder immediately to avoid stockout. Consider ordering a larger quantity to account for the lead time and demand velocity. A safety stock of 10-15 units can be maintained to mitigate stockout risks.",,"Based on the analysis:
+1) Increase inventory for upcoming peak season (May).
+2) Maintain current pricing strategy due to rising trend.
+3) Watch for key timing in April to prepare for peak demand in May.",0.85,0.0,0.85
+SKU_FASH_003,Fashion,Unisex Running Shoes,2499,900,40,12,391.8771294117647,0.0,3.397623119476194,11.77293613606171,CRITICAL,61,15675.085176470588,1331.4507948833761,REORDER_IMMEDIATELY,0.595,1.258,October,December,RISING,0.413,109.2,False,"1. **Brief Assessment**: The product has a significant profit margin of 43.5% (₹391.8771294117647 / ₹900), indicating a healthy profitability. With no daily loss, the sales are likely stable.
+
+2. **Pricing Action**: Consider a price increase to ₹2699 to capture more profit, as the current price may be leaving money on the table. Monitor sales volume and adjust as needed.
+
+3. **Cost Tip**: Review the supply chain and manufacturing process to identify opportunities to reduce COGS (₹900) by 5-10%, which could further increase profit margins.","**Analysis:**
+
+1. **Risk Assessment:** CRITICAL - The stock will be depleted in 11.8 days, but the lead time is 12 days, indicating a high risk of stockout.
+2. **Demand Pattern:** Steady demand - The velocity of 3.4 units/day suggests a consistent and predictable demand pattern.
+3. **Reorder Strategy:** **IMMEDIATE REORDER** - To avoid stockout, reorder should be placed immediately to ensure timely replenishment of stock. Consider ordering a buffer stock to account for any fluctuations in demand.","**Analysis: Unisex Running Shoes**
+
+1. **Why this action**: The stock level is critically low, with only 11.8 days of inventory left, posing a significant risk of stockouts and lost sales.
+2. **How to implement**: Immediately place a reorder for the unisex running shoes to replenish stock and mitigate the risk of stockouts.
+3. **Expected outcome**: Replenishing stock will prevent lost sales, maintain customer satisfaction, and protect the profit margin of ₹15675.09.
+4. **Priority**: **High** - given the critical risk level and significant profit at risk, immediate action is necessary to avoid stockouts and potential long-term damage to sales and customer loyalty.","Based on the analysis:
+1) Increase inventory for the upcoming peak season (October).
+2) Maintain current pricing strategy, as seasonality is rising.
+3) Watch for key timing in September to prepare for the October peak, and adjust inventory accordingly to avoid stockouts.",0.85,0.9,0.85
+SKU_BEAUTY_001,Beauty,Vitamin C Face Serum 30ml,699,180,110,7,195.81085000000002,0.0,6.046921284242761,18.19107523139769,SAFE,0,21539.1935,1184.0527965506667,MONITOR,0.493,0.945,May,December,RISING,0.932,108.3,False,"1. **Brief Assessment**: The Vitamin C Face Serum has a significant profit margin of ₹195.81 per unit, indicating a healthy profit-making product with no daily losses.
+
+2. **Pricing Action**: Consider a price increase to ₹749-₹799 to capture more profit, as the current price of ₹699 may be undervaluing the product.
+
+3. **Cost Tip**: Review and optimize the supply chain to reduce the COGS of ₹180, aiming to decrease it by 5-10% to further increase profit margins.",,,"Based on the analysis:
+1) Increase inventory for the upcoming peak season.
+2) Maintain current pricing due to low demand in the current season.
+3) Watch for May, the peak month, to capitalize on high demand and adjust strategies accordingly.",0.0,0.0,0.85
+SKU_SPORTS_001,Sports,Yoga Mat 6mm Premium,999,320,70,9,195.75475789473683,0.0,4.6776862845543485,14.964663241983322,SAFE,0,13702.833052631577,915.6793461404675,MONITOR,0.687,1.273,January,December,RISING,0.706,116.0,False,"1. **Brief Assessment**: The Yoga Mat 6mm Premium has a significant profit margin of approximately 61.5% (₹195.75 / ₹320), indicating a healthy profitability.
+
+2. **Pricing Action**: Consider a price increase to ₹1,099 - ₹1,199 to capture more revenue, as the current price may be undervalued given the premium product offering.
+
+3. **Cost Tip**: Investigate opportunities to reduce COGS by 5-10% (₹16 - ₹32) through supplier negotiations, material optimization, or manufacturing process improvements to further enhance profit margins.",,,"Based on the analysis:
+1) Increase inventory for the upcoming peak season (January).
+2) Maintain current pricing due to rising trend.
+3) Watch December for clearance sales and January for peak demand.",0.0,0.0,0.85
+SKU_FASH_002,Fashion,Women's Ethnic Kurti Set,1499,500,75,10,198.53515555555555,0.0,3.8263058151207,19.60115150849074,SAFE,0,14890.136666666667,759.656220208115,MONITOR,0.527,1.121,October,December,RISING,0.546,120.9,False,"1. **Brief Assessment**: The product has a significant profit margin of 32.3% (₹999 / ₹3099 is incorrect, correct calculation: ₹1499 - ₹500 = ₹999, then ₹999 / ₹1499 * 100 = 66.7% is incorrect, correct calculation: ₹999 / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: Profit/Unit: ₹999, Selling Price: ₹1499, COGS: ₹500, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is incorrect, correct calculation: (₹999 / ₹1499) * 100 = 66.7%, however, the correct calculation for profit margin is: (₹999 / ₹500) is incorrect, correct calculation: (₹1499 - ₹500) / ₹1499 * 100 = 66.7% is",,,"Based on the analysis:
+1) Increase inventory for next month (index: 1.12).
+2) Maintain current pricing (seasonal trend rising).
+3) Watch October (peak month) for sales optimization.",0.0,0.0,0.85
+SKU_ELEC_003,Electronics,Portable Power Bank 20000mAh,1299,520,80,10,243.8839157894737,0.0,3.0781674425675196,25.989489361004832,SAFE,0,19510.713263157893,750.7155293490364,MONITOR,0.516,0.899,May,December,RISING,0.896,58.5,False,"1. **Brief Assessment**: The product has a significant profit margin of 46.8% (₹779/₹1669 - (1299-520)), indicating a healthy profitability.
+
+2. **Pricing Action**: Consider a price increase to ₹1499 to capture more profit, as the current price may be leaving money on the table.
+
+3. **Cost Tip**: Negotiate with suppliers to reduce COGS by 5-10% (₹26-₹52) to further increase profit margins and competitiveness.",,,"Based on the analysis:
+1) Increase inventory for upcoming peak season.
+2) Maintain competitive pricing due to low current demand.
+3) Watch May for peak sales and adjust strategies accordingly.",0.0,0.0,0.85
+SKU_FASH_004,Fashion,Kids Winter Jacket,1799,650,100,14,288.5937666666666,0.0,2.595358807525163,38.53031793139857,SAFE,0,28859.37666666666,749.004374115195,MONITOR,0.723,1.581,January,April,RISING,0.913,79.7,False,"1. **Brief Assessment**: The product has a significant profit margin of 42% (₹288.59 / ₹650), indicating a well-priced item with potential for high profitability.
+
+2. **Pricing Action**: Consider a price increase to ₹1999 to capture more profit, as the current price may be leaving money on the table. Monitor demand elasticity to adjust accordingly.
+
+3. **Cost Tip**: Investigate opportunities to reduce COGS by 5-10% (₹32.50 - ₹65) through supplier negotiations, material optimization, or manufacturing process improvements to further boost profit margins.",,,"Based on the analysis:
+1) Increase inventory for upcoming peak season.
+2) Maintain premium pricing due to high demand.
+3) Watch January for peak sales and April for clearance opportunities.",0.0,0.0,0.85
+SKU_HOME_001,Home,Stainless Steel Water Bottle 1L,599,180,90,7,128.90987272727273,0.0,4.50443721581129,19.98029846749461,SAFE,0,11601.888545454547,580.6664281982241,MONITOR,0.49,0.971,May,December,RISING,0.988,106.1,False,,,,"Based on the analysis:
+1) Increase inventory for upcoming peak season.
+2) Maintain current pricing due to low demand.
+3) Watch May for peak sales and adjust strategies accordingly.",0.0,0.0,0.85
+SKU_BEAUTY_004,Beauty,Men's Grooming Kit,1299,420,55,10,94.39160000000004,0.0,3.5525387380294506,15.481886069596477,SAFE,0,5191.538000000002,335.3298155445808,MONITOR,0.611,1.316,October,December,RISING,0.616,107.6,False,,,,"Based on the analysis:
+1) Increase inventory for the upcoming peak season (October).
+2) Maintain current pricing strategy, as seasonality is rising.
+3) Watch for key timing in September to prepare for the October peak.",0.0,0.0,0.85
+SKU_HOME_003,Home,LED Desk Lamp with USB Port,1299,450,35,12,83.67778181818181,0.0,2.2846752351604116,15.319463992676658,WARNING,41,2928.7223636363638,191.17655585315615,PLAN_REORDER,0.685,1.56,January,April,RISING,0.882,62.0,False,,,,"Based on the analysis:
+1) Increase inventory for the upcoming peak season (January).
+2) Maintain competitive pricing due to rising trend.
+3) Watch for key timing in December to capitalize on holiday sales, as next month's index (1.56) indicates a significant increase in demand.",0.0,0.0,0.85
+SKU_SPORTS_002,Sports,Resistance Bands Set,599,150,130,7,-318.75631666666663,1275.0252666666665,6.549317438266449,19.84939670818734,SAFE,0,0.0,64.234963178541,PAUSE_ADS_OR_INCREASE_PRICE,0.716,1.298,January,December,RISING,0.733,163.0,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant loss per unit and daily loss, indicating a need for immediate pricing or cost adjustments.
+
+2. **Pricing Action**: Increase the selling price to at least ₹468.76 (COGS + desired profit margin) to break even. Consider market conditions and competitor pricing to determine an optimal price, potentially around ₹699-₹799.
+
+3. **Cost Tip**: Reduce COGS by 30-40% to ₹90-₹105 through supplier negotiations, economies of scale, or alternative manufacturing options to improve profit margins without solely relying on price increases.",,"1. **Why this action**: The product is unprofitable (₹-318.76 profit/unit) and has a low stock level (130 units, 19.8 days left), indicating a need to reassess pricing or advertising strategy to minimize losses.
+
+2. **How to implement**: Pause ads to stop incurring advertising costs and consider increasing the price to reduce losses or break even, as the risk is deemed SAFE.
+
+3. **Expected outcome**: Reduced losses by minimizing advertising expenses and potentially increasing revenue through higher pricing, which may lead to a more sustainable business model.
+
+4. **Priority**: High, as the current situation is unprofitable and immediate action is necessary to prevent further losses.","Based on the analysis:
+1) Increase inventory for the upcoming peak season (January).
+2) Consider discounts to clear current stock given the low current month index and negative profit/unit.
+3) Watch key timing in December (trough month) to prepare for the rising trend in January.",0.0,0.9,0.85
+SKU_ELEC_004,Electronics,USB-C Fast Charging Cable 2m,399,80,200,7,-92.22204000000002,768.5170000000003,9.419169930319754,21.23329353643061,SAFE,0,0.0,36.19396108669774,PAUSE_ADS_OR_INCREASE_PRICE,0.561,1.134,October,December,RISING,0.534,311.2,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a mismatch between the selling price and costs.
+
+2. **Pricing Action**: Increase the selling price to at least ₹172.22 (COGS + desired profit margin) to break even. A recommended price could be ₹249 to ensure a reasonable profit margin.
+
+3. **Cost Tip**: Reduce the COGS by negotiating with suppliers or exploring alternative, cost-effective materials to manufacture the USB-C Fast Charging Cable, aiming to lower the COGS to around ₹50-60.",,"1. **Why this action**: The product is making a loss (₹-92.22 per unit) and has a low stock level (200 units, 21.2 days left), indicating a need to reassess pricing or advertising to minimize losses.
+2. **How to implement**: Pause ads to reduce marketing expenses and consider increasing the price to offset the loss per unit, or optimize ad targeting to improve sales efficiency.
+3. **Expected outcome**: Reduced losses by minimizing marketing spend and potentially increasing revenue through higher pricing, leading to a more sustainable business model.
+4. **Priority**: High, as the product is currently unprofitable and has limited stock, requiring immediate attention to mitigate further losses.","Based on the analysis:
+1) Increase inventory for the upcoming peak season (October).
+2) Consider price cuts to clear stock during the current trough season.
+3) Watch for key timing in September to prepare for the October peak.",0.0,0.9,0.85
+SKU_FASH_001,Fashion,Men's Premium Cotton T-Shirt,799,280,120,8,-150.73461428571431,703.4282000000002,5.9964168466228225,20.011950981623954,SAFE,0,0.0,35.15040590724641,PAUSE_ADS_OR_INCREASE_PRICE,0.491,0.96,May,December,RISING,0.982,126.6,False,"**1. Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a mismatch between pricing and costs.
+
+**2. Pricing Action**: Increase the selling price to at least ₹930 (COGS + desired profit margin) to achieve profitability.
+
+**3. Cost Tip**: Review and optimize the COGS (₹280) to reduce production costs, considering alternatives such as sourcing cheaper cotton or renegotiating with suppliers.",,"1. **Why this action**: The product is making a loss (₹-150.73 per unit) and has a low stock level (120 units), indicating a need to reassess pricing or advertising strategy to minimize losses.
+
+2. **How to implement**: PAUSE_ADS_OR_INCREASE_PRICE can be implemented by either stopping ads to reduce marketing expenses or increasing the price to cover costs and potentially generate profit.
+
+3. **Expected outcome**: The expected outcome is to reduce losses by ₹-150.73 per unit, potentially leading to a break-even or profitable situation.
+
+4. **Priority**: **High**, given the significant loss per unit and limited stock, requiring immediate attention to mitigate further losses.","Based on the analysis:
+1) Increase inventory for upcoming peak season.
+2) Consider discounting to clear current stock given low profit/unit.
+3) Watch May for peak sales and adjust strategies accordingly.",0.0,0.9,0.85
+SKU_BEAUTY_003,Beauty,Sunscreen SPF 50 100ml,549,150,85,8,-75.92426206896553,366.9672666666667,6.052156850813274,14.044579824228764,SAFE,0,0.0,26.128746552716336,PAUSE_ADS_OR_INCREASE_PRICE,0.502,1.004,May,December,RISING,0.948,131.9,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a mismatch between pricing and costs.
+
+2. **Pricing Action**: Increase the selling price to at least ₹399.75 (COGS + desired profit margin) to break even, considering a minimum 30% margin, the price should be ₹225 (COGS) * 1.3 = ₹292.50, but to cover daily losses and achieve profitability, a higher price like ₹599 could be considered.
+
+3. **Cost Tip**: Reduce COGS by 20-30% through supplier negotiations, economies of scale, or reformulation to improve profit margins without solely relying on price increases.",,"**Analysis:**
+
+1. **Why this action**: The product has a negative profit per unit (₹-75.92), indicating a loss. PAUSE_ADS_OR_INCREASE_PRICE is considered to mitigate further losses.
+2. **How to implement**: Pause ads to stop incurring advertising costs, and consider increasing the price to reduce losses or break even.
+3. **Expected outcome**: Reduced losses, potential increase in revenue if price increase is implemented.
+4. **Priority**: High, as the product is making a loss and has a limited stock period (14 days) left, requiring immediate attention to minimize losses.","Based on the analysis:
+1. Increase inventory for the upcoming peak season.
+2. Consider discounts to clear current stock given low profit/unit.
+3. Watch May for peak sales and adjust strategies accordingly.",0.0,0.9,0.85
+SKU_HOME_002,Home,Bamboo Cutting Board Set,899,300,60,10,-187.7689714285715,438.12760000000014,2.2885125954786987,26.217902457054,SAFE,0,0.0,16.71100885044756,PAUSE_ADS_OR_INCREASE_PRICE,0.563,1.194,October,December,RISING,0.221,71.9,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a need for immediate pricing or cost adjustments.
+
+2. **Pricing Action**: Increase the selling price to at least ₹487.77 (COGS + initial desired profit margin) to break even, considering a minimum 10% profit margin, the price should be around ₹330 (COGS) * 1.1 (10% profit) = ₹363, but to cover daily losses and ensure profitability, a higher price like ₹599 or more might be necessary.
+
+3. **Cost Tip**: Review and renegotiate the COGS (₹300) with suppliers to reduce costs, aiming for a 10-20% reduction, which could help in maintaining competitiveness while increasing profit margins.",,"**Analysis of Bamboo Cutting Board Set**
+
+1. **Why this action**: The product is making a loss (₹-187.77 per unit) and has a low stock level (60 units), indicating a need to reassess pricing or advertising strategy to minimize losses.
+2. **How to implement**: PAUSE_ADS_OR_INCREASE_PRICE can be implemented by either stopping ads to reduce marketing expenses or increasing the price to cover costs and potentially generate profit.
+3. **Expected outcome**: By pausing ads or increasing the price, the expected outcome is to reduce losses and potentially break even or generate profit, depending on the price elasticity of demand.
+4. **Priority**: Medium to High, as the product is making a loss and has limited stock, requiring prompt action to mitigate further losses.","Recommendations: 
+1) Increase inventory for upcoming peak season (October).
+2) Consider discounting to clear current stock due to low profit/unit.
+3) Monitor sales in September to prepare for October peak.",0.0,0.9,0.85
+SKU_BEAUTY_002,Beauty,Organic Hair Oil 200ml,449,120,150,7,-127.3604,551.8950666666666,4.123624690840444,36.37576434470039,SAFE,0,0.0,15.172054157731328,PAUSE_ADS_OR_INCREASE_PRICE,0.475,1.14,August,December,RISING,1.0,89.4,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a mismatch between pricing and costs.
+
+2. **Pricing Action**: Increase the selling price to at least ₹247.36 (COGS + initial desired profit margin) to break even, considering a minimum 5% profit margin, the price should be around ₹505 (₹120 * 1.05 * 4) to ensure profitability.
+
+3. **Cost Tip**: Review and optimize the COGS (Cost of Goods Sold) by renegotiating with suppliers, streamlining production, or exploring alternative materials to reduce the cost from ₹120 to ₹80-₹100, enhancing profit margins.",,"**Analysis of Organic Hair Oil 200ml**
+
+1. **Why this action**: The product is making a loss (₹-127.36 per unit) and has a significant stock level (150 units), indicating a need to adjust pricing or advertising to minimize losses.
+2. **How to implement**: Either pause ads to reduce marketing expenses or increase the price to improve profit margins. Consider market research to determine the optimal price increase.
+3. **Expected outcome**: Pausing ads may reduce sales, while increasing the price may lead to a decrease in demand. However, both actions can help minimize losses and improve profitability.
+4. **Priority**: Medium to High, as the product is currently unprofitable and has a significant stock level, but the risk is classified as ""SAFE"", indicating a relatively low-risk situation.","Based on the analysis:
+1) Increase inventory for upcoming peak season.
+2) Consider discounting during current low season to clear stock.
+3) Watch August for peak sales and adjust strategies accordingly.",0.0,0.9,0.85
+SKU_SPORTS_004,Sports,Football Official Size,799,280,80,8,-132.28486153846148,286.61719999999985,2.160242663621125,37.032876605584356,SAFE,0,0.0,7.7395337945953555,PAUSE_ADS_OR_INCREASE_PRICE,0.545,1.142,October,December,RISING,0.654,87.1,False,"1. **Brief Assessment**: The product is currently unprofitable, with a significant daily loss, indicating a mismatch between pricing and costs.
+
+2. **Pricing Action**: Increase the selling price to at least ₹912.28 (COGS + initial profit/unit loss reversal) to break even, considering the current COGS.
+
+3. **Cost Tip**: Reduce COGS by 53% to ₹132.28 or less to maintain the current selling price of ₹799 and turn a profit.",,"**Analysis:**
+
+1. **Why this action**: The action PAUSE_ADS_OR_INCREASE_PRICE is likely chosen because the current profit per unit (₹-132.28) is negative, indicating a loss. Pausing ads or increasing the price may help reduce losses or increase revenue.
+2. **How to implement**: Pause ongoing advertisements to reduce marketing expenses or increase the price of the football by a reasonable amount to improve profit margins.
+3. **Expected outcome**: By pausing ads or increasing the price, the expected outcome is to reduce losses (or increase profits) per unit, thereby minimizing the overall loss on the remaining 80 units.
+4. **Priority**: Medium to High, as there are 37 days left to sell the stock and the current loss per unit is significant, requiring prompt action to mitigate further losses.","Recommendations: 
+1) Increase inventory for upcoming peak season (October).
+2) Consider price reduction to minimize losses (₹-132.28/unit).
+3) Monitor sales in September, before peak month October, to adjust strategies accordingly.",0.0,0.9,0.85

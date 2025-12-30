@@ -140,7 +140,12 @@ class SeasonalAnalystAgent:
             return None
         
         try:
+            # Convert to proper datetime index with frequency
             series = monthly_sales.set_index("year_month")["units_sold"]
+            
+            # Convert PeriodIndex to DatetimeIndex with monthly frequency
+            series.index = series.index.to_timestamp()
+            series = series.asfreq('MS')  # Set monthly start frequency
             
             # Fit simple seasonal decomposition first
             if len(series) >= 12:
@@ -157,7 +162,7 @@ class SeasonalAnalystAgent:
             else:
                 strength = 0.0
             
-            # Fit SARIMA for forecast
+            # Fit SARIMA for forecast with proper index
             model = SARIMAX(
                 series,
                 order=(1, 0, 1),

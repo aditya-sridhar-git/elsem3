@@ -892,17 +892,21 @@ async def n8n_analyze_shopify_data(data: ShopifyData):
         
         # Create sample sales history (in production, use actual Shopify orders)
         # For now, generate synthetic sales based on units_sold_last_30_days
+        # Extended to 90 days for seasonal analysis
         sales_rows = []
         for _, sku in df_master.iterrows():
-            # Generate 30 days of sales data
+            # Generate 90 days of sales data (minimum for seasonal analysis)
             daily_avg = sku["units_sold_last_30_days"] / 30
-            for day in range(1, 31):
+            for day in range(1, 91):
                 # Add some randomness to daily sales
                 import random
                 daily_units = max(0, int(daily_avg * random.uniform(0.5, 1.5)))
+                # Generate dates going back 90 days from today
+                from datetime import timedelta
+                date_obj = datetime.now() - timedelta(days=90-day)
                 sales_rows.append({
                     "sku_id": sku["sku_id"],
-                    "date": f"{day:02d}-11-2025",
+                    "date": date_obj.strftime("%Y-%m-%d"),
                     "units_sold": daily_units
                 })
         
@@ -916,6 +920,7 @@ async def n8n_analyze_shopify_data(data: ShopifyData):
         # Run agents on transformed Shopify data
         from profit_doctor import ProfitDoctorAgent
         from inventory_sentinel import InventorySentinelAgent
+        from seasonal_analyst import SeasonalAnalystAgent
         from strategy_supervisor import StrategySupervisorAgent
         
         # Agent 1: Profit Doctor
@@ -928,9 +933,14 @@ async def n8n_analyze_shopify_data(data: ShopifyData):
         df_inventory = inventory_agent.compute_inventory_metrics(df_profit, df_sales)
         print(f"[INFO] Inventory Sentinel analyzed {len(df_inventory)} SKUs")
         
-        # Agent 3: Strategy Supervisor
+        # Agent 3: Seasonal Analyst
+        seasonal_agent = SeasonalAnalystAgent()
+        df_seasonal = seasonal_agent.compute_seasonal_metrics(df_inventory, df_sales)
+        print(f"[INFO] Seasonal Analyst analyzed {len(df_seasonal)} SKUs")
+        
+        # Agent 4: Strategy Supervisor
         strategy_agent = StrategySupervisorAgent()
-        df_final = strategy_agent.rank_actions(df_inventory)
+        df_final = strategy_agent.rank_actions(df_seasonal)
         print(f"[INFO] Strategy Supervisor ranked {len(df_final)} SKUs")
         
         # Update global pipeline data

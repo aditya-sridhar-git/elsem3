@@ -69,3 +69,61 @@ export interface Alert {
     suggested_reorder?: number;
     suggested_price?: number;
 }
+
+// Seasonal Analysis Types
+export interface SeasonalAnalysis {
+    sku_id: string;
+    product_name: string;
+    category: string;
+    seasonal_index_current: number;
+    seasonal_index_next: number;
+    peak_month: string;
+    trough_month: string;
+    seasonal_trend: string;
+    seasonality_strength: number;
+    seasonal_forecast: number;
+    seasonal_risk_flag: boolean;
+    llm_seasonal_insight?: string;
+}
+
+export interface SeasonalResponse {
+    status: string;
+    total_skus: number;
+    strong_seasonality_count: number;
+    seasonal_risk_count: number;
+    analysis: SeasonalAnalysis[];
+}
+
+// Ad Gateway Types
+export interface AdCampaign {
+    campaign_id: string;
+    campaign_name: string;
+    platform: string;
+    status: string;
+    daily_budget: number;
+    total_spend_30d: number;
+    roas: number;
+    impressions: number;
+    clicks: number;
+    conversions: number;
+    ctr: number;
+    cpc: number;
+    sku_id?: string;
+}
+
+export interface AdMetricsSummary {
+    total_campaigns: number;
+    active_campaigns: number;
+    paused_campaigns: number;
+    total_spend_30d: number;
+    avg_roas: number;
+    platforms: Record<string, boolean>;
+}
+
+export interface AdPlatformCredentials {
+    platform: string;
+    api_key: string;
+    account_id: string;
+    client_secret?: string;
+}
+
